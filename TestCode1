@@ -1,0 +1,114 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+
+
+@TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
+//@Disabled
+public class roboToopersSet1 extends LinearOpMode{
+    // Declare OpMode members.
+    private ElapsedTime runtime = new ElapsedTime();
+    private DcMotor leftDrive = null;
+    private DcMotor rightDrive = null;
+
+    private Servo arm = null;
+    private Servo claw = null;
+
+    public final static double ARM_HOME = 0.2;
+    public final static double CLAW_HOME = 0.2;
+    public final static double ARM_MIN_RANGE  = 0.20;
+    public final static double ARM_MAX_RANGE  = 0.90;
+    public final static double CLAW_MIN_RANGE  = 0.20;
+    public final static double CLAW_MAX_RANGE  = 0.7;
+
+    @Override
+    public void runOpMode() {
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+        // Initialize the hardware variables. Note that the strings used here as parameters
+        // to 'get' must correspond to the names assigned during the robot configuration
+        // step (using the FTC Robot Controller app on the phone).
+        leftDrive  = hardwareMap.dcMotor.get("left_drive");
+        rightDrive = hardwareMap.dcMotor.get("right_drive");
+
+        // Define and initialize ALL installed servos.
+        arm  = hardwareMap.get(Servo.class, "arm");
+        claw = hardwareMap.get(Servo.class, "claw");
+        arm.setPosition(ARM_HOME);
+        claw.setPosition(CLAW_HOME);
+        // Most robots need the motor on one side to be reversed to drive forward
+        // Reverse the motor that runs backwards when connected directly to the battery
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+        runtime.reset();
+
+        //Write the autonomous code here
+
+        //Drive the robot forward
+        leftDrive.setPower(0.8);
+        rightDrive.setPower(0.8);
+        sleep(3000 );
+
+        //to turn the robot left, make the left motor with negative power and right with positive power.
+        leftDrive.setPower(-0.5);
+        rightDrive.setPower(0.5);
+        sleep(750 );
+
+        //Drive the robot forward
+        leftDrive.setPower(0.8);
+        rightDrive.setPower(0.8);
+        sleep(3000 );
+
+        //Stop the robot now
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+        runtime.reset();
+
+        //The code below will run for the driver part for the competition
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()) {
+
+            // Setup a variable for each drive wheel to save power level for telemetry
+            double leftPower;
+            double rightPower;
+
+            // POV Mode uses left stick to go forward, and right stick to turn.
+            // - This uses basic math to combine motions and is easier to drive straight.
+            double drive = -gamepad1.left_stick_y;
+            double turn  =  gamepad1.right_stick_x;
+            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+
+            // Send calculated power to wheels
+            leftDrive.setPower(leftPower);
+            rightDrive.setPower(rightPower);
+
+            // check to see if we need to move the servo.
+            if(gamepad1.y) {
+                // move to 0 degrees.
+                arm.setPosition(ARM_MIN_RANGE);
+            } else if (gamepad1.x || gamepad1.b) {
+                // move to 90 degrees.
+                arm.setPosition(0.5);
+            } else if (gamepad1.a) {
+                // move to 180 degrees.
+                arm.setPosition(ARM_MAX_RANGE);
+            }
+            telemetry.addData("Servo Position", arm.getPosition());
+
+            // Show the elapsed game time and wheel power.
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.update();
+        }
+    }
+}
