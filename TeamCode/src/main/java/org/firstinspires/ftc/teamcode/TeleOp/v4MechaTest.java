@@ -80,7 +80,7 @@ backRight.setPower(v4);
 
 
 
-            //or this, which is tank drive with normal joystick and button movement. Also my test code
+            //or this, which is tank drive with normal joystick and button movement
 
 
 
@@ -147,6 +147,8 @@ backRight.setPower(v4);
 
 
             /*
+
+            this is what i use for vex meca (test)
 
             double threshold = 0.157;
 
