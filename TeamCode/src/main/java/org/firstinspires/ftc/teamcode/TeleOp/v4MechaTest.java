@@ -148,7 +148,7 @@ backRight.setPower(v4);
 
             /*
 
-            this is what i use for vex meca (test)
+            this is what i use for vex meca (havent tested)
 
             double threshold = 0.157;
 
