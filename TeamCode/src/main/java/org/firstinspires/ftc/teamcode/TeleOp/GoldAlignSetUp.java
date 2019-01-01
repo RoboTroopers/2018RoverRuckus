@@ -41,7 +41,7 @@ import com.vuforia.CameraDevice;
 
 @TeleOp(name="GoldAlign Example", group="DogeCV")
 
-public class GoldAlignExample extends OpMode
+public class GoldAlignSetUp extends OpMode
 {
     // Detector object
     private GoldAlignDetector detector;

@@ -13,9 +13,9 @@ import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 
 
-@Autonomous(name = "LITPEPEHANDSSS", group = "Working")
+@Autonomous(name = "Chungus", group = "Working")
 
-public class v2AutoAllMotor extends LinearOpMode {
+public class Chungus extends LinearOpMode {
 
     private ElapsedTime       runtime = new ElapsedTime();
 
@@ -39,7 +39,6 @@ public class v2AutoAllMotor extends LinearOpMode {
     private static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * PI);
     private static final double ACTUATOR_COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * ACTUATOR_GEAR_REDUCTION) / (ACTUATOR_GEAR_DIAMETER * PI);
 
-    //test
 
 
     @Override

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -8,9 +9,9 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-
+@Disabled
 @TeleOp(name = "Spice MemesTHETHIRDONE", group = "Working")
-public class SpiceMemes extends LinearOpMode {
+public class RawSpiceMeme extends LinearOpMode {
 
     private DcMotor        left_drive;
     private DcMotor        right_drive;

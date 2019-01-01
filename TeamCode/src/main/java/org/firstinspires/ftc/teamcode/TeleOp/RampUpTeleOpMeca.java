@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 
 @TeleOp(name = "SPICEMEMEISBACK", group = "Working")
-public class SpiceMemeISBACK extends LinearOpMode {
+public class RampUpTeleOpMeca extends LinearOpMode {
 
     private DcMotor        frontLeft;
     private DcMotor        frontRight;

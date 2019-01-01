@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -12,11 +13,10 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 
 
-//Version 1.0
+@Disabled
+@Autonomous(name = "Literally PepeHands But Android", group = "Old")
 
-@Autonomous(name = "PepeHandsAndroidTHESECOND", group = "Working")
-
-public class PepeHandsAndroid extends LinearOpMode {
+public class FirstQualCode extends LinearOpMode {
 
     private ElapsedTime       runtime = new ElapsedTime();
 
