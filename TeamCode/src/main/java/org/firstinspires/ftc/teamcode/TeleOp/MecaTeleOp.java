@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 //Version 1.4
 
-@TeleOp(name = "Meca Working", group = "Android")
-public class MecaWorking extends LinearOpMode {
+@TeleOp(name = "MecaWorkingTele", group = "Working")
+public class MecaTeleOp extends LinearOpMode {
 
     private DcMotor        frontLeft;
     private DcMotor        frontRight;
@@ -19,6 +19,7 @@ public class MecaWorking extends LinearOpMode {
     private DcMotor        backRight;
     private DcMotor        actuator;
     private DcMotor        pulley;
+    private DcMotor        rotate;
 
 
 
@@ -37,7 +38,7 @@ public class MecaWorking extends LinearOpMode {
         backLeft   = hardwareMap.get(DcMotor.class, "backLeft");
         backRight  = hardwareMap.get(DcMotor.class, "backRight");
         pulley = hardwareMap.get(DcMotor.class, "pulley");
-
+        rotate = hardwareMap.get(DcMotor.class, "rotate");
 
 
 
@@ -129,9 +130,22 @@ public class MecaWorking extends LinearOpMode {
                 actuator.setPower(gamepad2.left_stick_y);
                 pulley.setPower(gamepad2.right_stick_y);
 
+                if(gamepad2.left_bumper)
+                {
+                    rotate.setPower(1);
+                }
+
+                else if(gamepad2.right_bumper)
+                {
+                    rotate.setPower(-1);
+                }
+
+                else
+                {
+                    rotate.setPower(0);
+                }
+
             }
-
-
 
 
 
