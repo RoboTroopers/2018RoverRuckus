@@ -76,7 +76,7 @@ public class MecaTeleOp extends LinearOpMode {
                     intakeVar = 0;
                 }
 
-                intake.setPower(intakeVar/1.5);
+                intake.setPower(intakeVar);
 
                if(gamepad2.left_trigger == 1)
                 {
@@ -154,7 +154,7 @@ public class MecaTeleOp extends LinearOpMode {
                     intakeVar = 0;
                 }
 
-                intake.setPower(intakeVar/1.5);
+                intake.setPower(intakeVar);
 
                 if(gamepad2.left_trigger == 1)
                 {
