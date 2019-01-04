@@ -7,9 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 
-//Version 1.4
 
-@TeleOp(name = "MecaWorking TeleOp", group = "Working")
+@TeleOp(name = "Chinn Park", group = "Working")
 public class MecaTeleOp extends LinearOpMode {
 
     private DcMotor        frontLeft;
@@ -49,6 +48,7 @@ public class MecaTeleOp extends LinearOpMode {
 
 
         waitForStart();
+
         if (opModeIsActive()) {
         }
 
@@ -175,10 +175,10 @@ public class MecaTeleOp extends LinearOpMode {
 
                 if(Math.abs(gamepad1.left_stick_y) > threshold || Math.abs(gamepad1.left_stick_x) > threshold)
                 {
-                    frontRight.setPower(((-gamepad1.left_stick_y) + (-gamepad1.left_stick_x))/2);
-                    backLeft.setPower(((-gamepad1.left_stick_y) + (-gamepad1.left_stick_x))/2);
-                    frontLeft.setPower(((-gamepad1.left_stick_y) - (-gamepad1.left_stick_x))/2);
-                    backRight.setPower(((-gamepad1.left_stick_y) - (-gamepad1.left_stick_x))/2);
+                    frontRight.setPower(((-gamepad1.left_stick_y) + (-gamepad1.left_stick_x)));
+                    backLeft.setPower(((-gamepad1.left_stick_y) + (-gamepad1.left_stick_x)));
+                    frontLeft.setPower(((-gamepad1.left_stick_y) - (-gamepad1.left_stick_x)));
+                    backRight.setPower(((-gamepad1.left_stick_y) - (-gamepad1.left_stick_x)));
                 }
 
                 else
@@ -191,10 +191,10 @@ public class MecaTeleOp extends LinearOpMode {
 
                 if(Math.abs(gamepad1.right_stick_x) > threshold)
                 {
-                    frontRight.setPower((-gamepad1.right_stick_x/2));
-                    frontLeft.setPower((gamepad1.right_stick_x/2));
-                    backLeft.setPower((gamepad1.right_stick_x/2));
-                    backRight.setPower((-gamepad1.right_stick_x)/2);
+                    frontRight.setPower((-gamepad1.right_stick_x));
+                    frontLeft.setPower((gamepad1.right_stick_x));
+                    backLeft.setPower((gamepad1.right_stick_x));
+                    backRight.setPower((-gamepad1.right_stick_x));
                 }
 
 
