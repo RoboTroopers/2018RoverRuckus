@@ -1,16 +1,15 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 
 //Version 1.4
 
-@TeleOp(name = "MecaWorkingTele", group = "Working")
+@TeleOp(name = "MecaWorking TeleOp", group = "Working")
 public class MecaTeleOp extends LinearOpMode {
 
     private DcMotor        frontLeft;
@@ -19,9 +18,8 @@ public class MecaTeleOp extends LinearOpMode {
     private DcMotor        backRight;
     private DcMotor        actuator;
     private DcMotor        pulley;
-    private DcMotor        rotate;
-
-
+    private DcMotor        intake;
+    private CRServo        outtake;
 
 
 
@@ -38,7 +36,8 @@ public class MecaTeleOp extends LinearOpMode {
         backLeft   = hardwareMap.get(DcMotor.class, "backLeft");
         backRight  = hardwareMap.get(DcMotor.class, "backRight");
         pulley = hardwareMap.get(DcMotor.class, "pulley");
-        rotate = hardwareMap.get(DcMotor.class, "rotate");
+        intake = hardwareMap.get(DcMotor.class, "intake");
+        outtake = hardwareMap.get(CRServo.class, "outtake");
 
 
 
@@ -59,6 +58,28 @@ public class MecaTeleOp extends LinearOpMode {
             {
                 actuator.setPower(gamepad2.left_stick_y);
                 pulley.setPower(gamepad2.right_stick_y);
+
+                int intakeVar;
+
+                if(gamepad2.left_bumper)
+                {
+                    intakeVar = 1;
+                }
+
+                else if(gamepad2.right_bumper)
+                {
+                    intakeVar = -1;
+                }
+
+                else
+                {
+                    intakeVar = 0;
+                }
+
+                intake.setPower(intakeVar);
+
+                outtake.setPower(gamepad2.left_trigger);
+                outtake.setPower(-gamepad2.right_trigger);
 
                 if((-gamepad1.left_stick_y) < -0.75)
                 {
@@ -101,6 +122,31 @@ public class MecaTeleOp extends LinearOpMode {
             else
             {
 
+                actuator.setPower(gamepad2.left_stick_y);
+                pulley.setPower(gamepad2.right_stick_y);
+
+                int intakeVar;
+
+                if(gamepad2.left_bumper)
+                {
+                    intakeVar = 1;
+                }
+
+                else if(gamepad2.right_bumper)
+                {
+                    intakeVar = -1;
+                }
+
+                else
+                {
+                    intakeVar = 0;
+                }
+
+                intake.setPower(intakeVar);
+
+                outtake.setPower(gamepad2.left_trigger);
+                outtake.setPower(-gamepad2.right_trigger);
+
                 double threshold = 0.157;
 
                 if(Math.abs(gamepad1.left_stick_y) > threshold || Math.abs(gamepad1.left_stick_x) > threshold)
@@ -127,23 +173,7 @@ public class MecaTeleOp extends LinearOpMode {
                     backRight.setPower((-gamepad1.right_stick_x)/2);
                 }
 
-                actuator.setPower(gamepad2.left_stick_y);
-                pulley.setPower(gamepad2.right_stick_y);
 
-                if(gamepad2.left_bumper)
-                {
-                    rotate.setPower(1);
-                }
-
-                else if(gamepad2.right_bumper)
-                {
-                    rotate.setPower(-1);
-                }
-
-                else
-                {
-                    rotate.setPower(0);
-                }
 
             }
 
@@ -153,6 +183,8 @@ public class MecaTeleOp extends LinearOpMode {
             telemetry.addData("front right power", frontRight.getPower());
             telemetry.addData("back left power", backLeft.getPower());
             telemetry.addData("back right power", backRight.getPower());
+            telemetry.addData("intake power", intake.getPower());
+            telemetry.addData("outtake power", outtake.getPower());
             telemetry.update();
 
         }
