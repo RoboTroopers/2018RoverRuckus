@@ -76,10 +76,22 @@ public class MecaTeleOp extends LinearOpMode {
                     intakeVar = 0;
                 }
 
-                intake.setPower(intakeVar);
+                intake.setPower(intakeVar/1.5);
 
-                outtake.setPower(gamepad2.left_trigger);
-                outtake.setPower(-gamepad2.right_trigger);
+               if(gamepad2.left_trigger == 1)
+                {
+                    outtake.setPower(1);
+                }
+
+                else if(gamepad2.right_trigger == 1)
+                {
+                    outtake.setPower(-1);
+                }
+
+                else
+                {
+                    outtake.setPower(0);
+                }
 
                 if((-gamepad1.left_stick_y) < -0.75)
                 {
@@ -142,10 +154,22 @@ public class MecaTeleOp extends LinearOpMode {
                     intakeVar = 0;
                 }
 
-                intake.setPower(intakeVar);
+                intake.setPower(intakeVar/1.5);
 
-                outtake.setPower(gamepad2.left_trigger);
-                outtake.setPower(-gamepad2.right_trigger);
+                if(gamepad2.left_trigger == 1)
+                {
+                    outtake.setPower(1);
+                }
+
+                else if(gamepad2.right_trigger == 1)
+                {
+                    outtake.setPower(-1);
+                }
+
+                else
+                {
+                    outtake.setPower(0);
+                }
 
                 double threshold = 0.157;
 
