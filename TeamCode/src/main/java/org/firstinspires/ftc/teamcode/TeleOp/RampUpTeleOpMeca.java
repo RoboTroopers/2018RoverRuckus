@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp(name = "Chinn Park", group = "Working")
+@TeleOp(name = "RampUp TeleOp", group = "Working")
 public class RampUpTeleOpMeca extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();

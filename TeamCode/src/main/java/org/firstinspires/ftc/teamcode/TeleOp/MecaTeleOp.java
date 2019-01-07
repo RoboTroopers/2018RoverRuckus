@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 
 
-@TeleOp(name = "Chinn Park", group = "Working")
+@TeleOp(name = "101 Retards", group = "Working")
 public class MecaTeleOp extends LinearOpMode {
 
     private DcMotor        frontLeft;
@@ -54,153 +54,68 @@ public class MecaTeleOp extends LinearOpMode {
 
         while (opModeIsActive())
         {
-            if(gamepad1.x)
+            actuator.setPower(gamepad2.left_stick_y);
+            pulley.setPower(gamepad2.right_stick_y);
+
+            int intakeVar;
+
+            if(gamepad2.left_bumper)
             {
-                actuator.setPower(gamepad2.left_stick_y);
-                pulley.setPower(gamepad2.right_stick_y);
+                intakeVar = 1;
+            }
 
-                int intakeVar;
-
-                if(gamepad2.left_bumper)
-                {
-                    intakeVar = 1;
-                }
-
-                else if(gamepad2.right_bumper)
-                {
-                    intakeVar = -1;
-                }
-
-                else
-                {
-                    intakeVar = 0;
-                }
-
-                intake.setPower(intakeVar);
-
-               if(gamepad2.left_trigger == 1)
-                {
-                    outtake.setPower(1);
-                }
-
-                else if(gamepad2.right_trigger == 1)
-                {
-                    outtake.setPower(-1);
-                }
-
-                else
-                {
-                    outtake.setPower(0);
-                }
-
-                if((-gamepad1.left_stick_y) < -0.75)
-                {
-                    frontLeft.setPower((-gamepad1.left_stick_y) + 0.75);
-                    backLeft.setPower((-gamepad1.left_stick_y) + 0.75);
-                }
-
-                else if((-gamepad1.left_stick_y) > 0.75)
-                {
-                    frontLeft.setPower((-gamepad1.left_stick_y) - 0.75);
-                    backLeft.setPower((-gamepad1.left_stick_y) - 0.75);
-                }
-
-                else
-                {
-                    frontLeft.setPower(0);
-                    backRight.setPower(0);
-                }
-
-                if((-gamepad1.right_stick_y) < -0.75)
-                {
-                    frontRight.setPower((-gamepad1.right_stick_y) + 0.75);
-                    backRight.setPower((-gamepad1.right_stick_y) + 0.75);
-                }
-
-                else if((-gamepad1.right_stick_y) > 0.75)
-                {
-                    frontRight.setPower((-gamepad1.right_stick_y) - 0.75);
-                    backRight.setPower((-gamepad1.right_stick_y) - 0.75);
-                }
-
-                else
-                {
-                    frontRight.setPower(0);
-                    backLeft.setPower(0);
-                }
-
+            else if(gamepad2.right_bumper)
+            {
+                intakeVar = -1;
             }
 
             else
             {
-
-                actuator.setPower(gamepad2.left_stick_y);
-                pulley.setPower(gamepad2.right_stick_y);
-
-                int intakeVar;
-
-                if(gamepad2.left_bumper)
-                {
-                    intakeVar = 1;
-                }
-
-                else if(gamepad2.right_bumper)
-                {
-                    intakeVar = -1;
-                }
-
-                else
-                {
-                    intakeVar = 0;
-                }
-
-                intake.setPower(intakeVar);
-
-                if(gamepad2.left_trigger == 1)
-                {
-                    outtake.setPower(1);
-                }
-
-                else if(gamepad2.right_trigger == 1)
-                {
-                    outtake.setPower(-1);
-                }
-
-                else
-                {
-                    outtake.setPower(0);
-                }
-
-                double threshold = 0.157;
-
-                if(Math.abs(gamepad1.left_stick_y) > threshold || Math.abs(gamepad1.left_stick_x) > threshold)
-                {
-                    frontRight.setPower(((-gamepad1.left_stick_y) + (-gamepad1.left_stick_x)));
-                    backLeft.setPower(((-gamepad1.left_stick_y) + (-gamepad1.left_stick_x)));
-                    frontLeft.setPower(((-gamepad1.left_stick_y) - (-gamepad1.left_stick_x)));
-                    backRight.setPower(((-gamepad1.left_stick_y) - (-gamepad1.left_stick_x)));
-                }
-
-                else
-                {
-                    frontLeft.setPower(0);
-                    frontRight.setPower(0);
-                    backLeft.setPower(0);
-                    backRight.setPower(0);
-                }
-
-                if(Math.abs(gamepad1.right_stick_x) > threshold)
-                {
-                    frontRight.setPower((-gamepad1.right_stick_x));
-                    frontLeft.setPower((gamepad1.right_stick_x));
-                    backLeft.setPower((gamepad1.right_stick_x));
-                    backRight.setPower((-gamepad1.right_stick_x));
-                }
-
-
-
+                intakeVar = 0;
             }
 
+            intake.setPower(intakeVar);
+
+            if(gamepad2.left_trigger == 1)
+            {
+                outtake.setPower(1);
+            }
+
+            else if(gamepad2.right_trigger == 1)
+            {
+                outtake.setPower(-1);
+            }
+
+            else
+            {
+                outtake.setPower(0);
+            }
+
+            double threshold = 0.157;
+
+            if(Math.abs(gamepad1.left_stick_y) > threshold || Math.abs(gamepad1.left_stick_x) > threshold)
+            {
+                frontRight.setPower(((-gamepad1.left_stick_y) + (-gamepad1.left_stick_x)));
+                backLeft.setPower(((-gamepad1.left_stick_y) + (-gamepad1.left_stick_x)));
+                frontLeft.setPower(((-gamepad1.left_stick_y) - (-gamepad1.left_stick_x)));
+                backRight.setPower(((-gamepad1.left_stick_y) - (-gamepad1.left_stick_x)));
+            }
+
+            else
+            {
+                frontLeft.setPower(0);
+                frontRight.setPower(0);
+                backLeft.setPower(0);
+                backRight.setPower(0);
+            }
+
+            if(Math.abs(gamepad1.right_stick_x) > threshold)
+            {
+                frontRight.setPower((-gamepad1.right_stick_x));
+                frontLeft.setPower((gamepad1.right_stick_x));
+                backLeft.setPower((gamepad1.right_stick_x));
+                backRight.setPower((-gamepad1.right_stick_x));
+            }
 
 
             telemetry.addData("front left power", frontLeft.getPower());

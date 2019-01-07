@@ -24,7 +24,8 @@ public class Chungus extends LinearOpMode {
     private DcMotor backLeft;
     private DcMotor backRight;
     private DcMotor actuator;
-    private CRServo intake;
+    private DcMotor intake;
+    private CRServo outtake;
     private DcMotor pulley;
     private GoldAlignDetector detector;
 
@@ -49,7 +50,8 @@ public class Chungus extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         actuator = hardwareMap.get(DcMotor.class, "actuator");
-        intake = hardwareMap.get(CRServo.class, "intake");
+        intake = hardwareMap.get(DcMotor.class, "intake");
+        outtake = hardwareMap.get(CRServo.class, "outtake");
         pulley = hardwareMap.get(DcMotor.class, "pulley");
 
 
@@ -105,12 +107,12 @@ public class Chungus extends LinearOpMode {
         unlatch();
 
         mecaDrive(0.25, 6, 10, 5);
-        strafe(0.25, -2.5, 3);
+        strafe(0.25, 5, 3);
 
         if (detector.getAligned()) {
             telemetry.addData("Gold Mineral Aligned!", null);
             telemetry.update();
-            mecaDrive(0.5, 22, 22, 3);
+            mecaDrive(0.5, 24, 24, 3);
 
             detector.disable();
 
@@ -123,7 +125,9 @@ public class Chungus extends LinearOpMode {
 
             mecaDrive(0.5,-4.5,4.5,5);
 
-            mecaDrive(0.5,-30,-30,10);
+            mecaDrive(0.5,-8,-8,10);
+            strafe(0.5,-5,5);
+            mecaDrive(0.5,-22,-22,10);
             mecaDrive(0.5,5,-5,5);
             mecaDrive(0.5,-17.75,-17.75,5);
             mecaDrive(0.5,10,-10,5);
@@ -251,12 +255,12 @@ public class Chungus extends LinearOpMode {
             backLeft.setPower(Math.abs(speed));
             backRight.setPower(Math.abs(speed));
 
-                while(opModeIsActive() && (runtime.seconds() < timeoutS)
-                     && (frontLeft.isBusy()) && (frontRight.isBusy()) &&
-                        (backLeft.isBusy()) && (backRight.isBusy()))
-                    {
-                        motorTelemetryPower();
-                    }
+            while(opModeIsActive() && (runtime.seconds() < timeoutS)
+                    && (frontLeft.isBusy()) && (frontRight.isBusy()) &&
+                    (backLeft.isBusy()) && (backRight.isBusy()))
+            {
+                motorTelemetryPower();
+            }
 
             allMotorsZero();
             allMotorsResetEncoder();
@@ -400,8 +404,7 @@ public class Chungus extends LinearOpMode {
             {
 
                 telemetry.addData("Path1","Running to %7d", newActuatorTarget);
-                telemetry.addData("Path2","Running from %7d",
-                        actuator.getCurrentPosition());
+                telemetry.addData("Path2","Running from %7d", actuator.getCurrentPosition());
                 telemetry.update();
             }
 
@@ -419,9 +422,9 @@ public class Chungus extends LinearOpMode {
     private void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //actuatorMovement(1,-23,10);
+        actuatorMovement(1,-25,10);
 
-        strafe(0.25,3,5);
+        strafe(0.25,-3.5,5);
 
     }
 }
