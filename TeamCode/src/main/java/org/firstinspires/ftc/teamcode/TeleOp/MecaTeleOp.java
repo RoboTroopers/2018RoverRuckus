@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 
 
-@TeleOp(name = "101 Retards", group = "Working")
+@TeleOp(name = "Retard", group = "Working")
 public class MecaTeleOp extends LinearOpMode {
 
     private DcMotor        frontLeft;

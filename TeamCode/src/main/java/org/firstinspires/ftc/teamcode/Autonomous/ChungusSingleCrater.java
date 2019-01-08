@@ -13,9 +13,9 @@ import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 
 
-@Autonomous(name = "Chungus", group = "Working")
+@Autonomous(name = "Chungus Single Crater", group = "Working")
 
-public class Chungus extends LinearOpMode {
+public class ChungusSingleCrater extends LinearOpMode {
 
     private ElapsedTime       runtime = new ElapsedTime();
 
@@ -81,8 +81,8 @@ public class Chungus extends LinearOpMode {
         detector.useDefaults(); // Set detector to use default settings
 
         // Optional tuning
-        detector.alignSize = 300; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
-        detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
+        detector.alignSize = 350; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
+        detector.alignPosOffset = 50; // How far from center frame to offset this alignment zone.
         detector.downscale = 0.4; // How much to downscale the input frames
 
         detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
@@ -104,83 +104,40 @@ public class Chungus extends LinearOpMode {
         telemetry.update();
 
 
+
+
         unlatch();
 
-        mecaDrive(0.25, 6, 10, 5);
-        strafe(0.25, 5, 3);
+        allMotorsResetEncoder();
+        allMotorsToPosition();
+
+        mecaDrive(0.25, 7.5, 7.5, 5);
+        strafe(0.25,-8,10);
 
         if (detector.getAligned()) {
-            telemetry.addData("Gold Mineral Aligned!", null);
-            telemetry.update();
-            mecaDrive(0.5, 24, 24, 3);
-
-            detector.disable();
-
-            //pulley.setPower(-1);
-            //intake.setPower(-1);
-            //sleep(750);
-
-            //pulley.setPower(-1);
-            //sleep(250);
-
-            mecaDrive(0.5,-4.5,4.5,5);
-
-            mecaDrive(0.5,-8,-8,10);
-            strafe(0.5,-5,5);
-            mecaDrive(0.5,-22,-22,10);
-            mecaDrive(0.5,5,-5,5);
-            mecaDrive(0.5,-17.75,-17.75,5);
-            mecaDrive(0.5,10,-10,5);
-            mecaDrive(1,28,28,5);
-
-
+            intake.setPower(0.5);
+            mecaDrive(0.8,20,20,5);
+            intake.setPower(0);
             requestOpModeStop();
         }
 
         else {
-            telemetry.addData("Gold Cube Not Aligned", null);
-            telemetry.update();
-
-            strafe(0.5, -9, 5);
+            strafe(0.25,10,5);
         }
 
         if (detector.getAligned()) {
-            telemetry.addData("Gold Mineral Aligned!", null);
-            telemetry.update();
-
-            mecaDrive(0.5, 16, 16, 5);
-
-            detector.disable();
-
-            mecaDrive(0.5,-5,5,5);
-            mecaDrive(0.5,11,11,5);
-            mecaDrive(0.5,-32,-32,5);
-            strafe(0.5,4,4);
-            mecaDrive(0.5,4,-4,5);
-            mecaDrive(0.5,-24,-24,10);
-
-
-
+            intake.setPower(0.5);
+            mecaDrive(0.8,20,20,5);
+            intake.setPower(0);
             requestOpModeStop();
         }
 
         else {
-            strafe(0.4, 17, 10);
-
-            allMotorsZero();
-            allMotorsResetEncoder();
-
-            mecaDrive(0.5, 10, 10, 6);
-
-            detector.disable();
-
-            strafe(0.75,-4,5);
-            mecaDrive(0.75,6,6,5);
-            mecaDrive(0.3,15,-15,10);
-            mecaDrive(0.5,28,28,10);
-            mecaDrive(0.5,-6,6,5);
-            strafe(0.5,-6,5);
-            mecaDrive(1,15,15,5);
+            strafe(0.25,10,5);
+            intake.setPower(0.5);
+            mecaDrive(0.8,20,20,5);
+            intake.setPower(0);
+            requestOpModeStop();
         }
     }
 
@@ -422,9 +379,9 @@ public class Chungus extends LinearOpMode {
     private void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        actuatorMovement(1,-25,10);
+        actuatorMovement(1,-27,10);
 
-        strafe(0.25,-3.5,5);
+        strafe(0.25,-3,5);
 
     }
 }
