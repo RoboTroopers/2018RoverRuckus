@@ -79,24 +79,26 @@ public class MecaTeleOp extends LinearOpMode {
 
             intake.setPower(intakeVar);
 
-            if(gamepad2.y)
-            {
-                outtake.setPosition(0.5);
-            }
-
-            else if(gamepad2.b)
+            if(gamepad2.a)
             {
                 outtake.setPosition(0.01);
             }
 
-            else if(gamepad2.a)
+            else if(gamepad2.b)
             {
                 outtake.setPosition(0.99);
             }
 
+            //TODO: EDIT THESE 2:
+
+            else if(gamepad2.a)
+            {
+                outtake.setPosition(0.5);
+            }
+
             else if(gamepad2.x)
             {
-                outtake.setPosition(0.1);
+                outtake.setPosition(0.35);
             }
 
 

@@ -132,7 +132,7 @@ public class ChungusSingleCrater extends LinearOpMode {
         }
 
         else {
-            strafe(0.25,10,5);
+            strafe(0.25,11,5);
             intake.setPower(0.5);
             mecaDrive(0.8,20,20,5);
             intake.setPower(0);
@@ -378,9 +378,9 @@ public class ChungusSingleCrater extends LinearOpMode {
     private void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        actuatorMovement(1,-27,10);
+        //actuatorMovement(1,-27,10);
 
-        strafe(0.25,-3,5);
+        strafe(0.25,-2.75,5);
 
     }
 }

@@ -81,8 +81,8 @@ public class ChungusDoubleCrater extends LinearOpMode {
         detector.useDefaults(); // Set detector to use default settings
 
         // Optional tuning
-        detector.alignSize = 350; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
-        detector.alignPosOffset = 50; // How far from center frame to offset this alignment zone.
+        detector.alignSize = 500; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
+        detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
         detector.downscale = 0.4; // How much to downscale the input frames
 
         detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
@@ -124,20 +124,25 @@ public class ChungusDoubleCrater extends LinearOpMode {
             mecaDrive(0.75,-7,-7,10);
             strafe(0.5,-6.5,5);
             strafe(0.5,6.5,5);
-            mecaDrive(0.5,-14.5,-14.5,10);
+            mecaDrive(0.5,-16,-16,10);
             requestOpModeStop();
         }
 
         else {
-            strafe(0.25,10,5);
+            strafe(0.25,11,5);
         }
 
         if (detector.getAligned()) {
+            intake.setPower(1);
             mecaDrive(0.5,4,4,5);
-            mecaDrive(0.5,-5.5,-5.5,5);
+            intake.setPower(0);
+            mecaDrive(0.3,-5.5,-5.5,5);
             strafe(0.25,28,10);
-            mecaDrive(0.5,6,-6,5);
-            mecaDrive(0.75,-36,-36,10);
+            mecaDrive(0.5,5,-5,5);
+            mecaDrive(0.5,-18,-18,10);
+            strafe(0.5,-16,5);
+            strafe(0.5,14,5);
+            mecaDrive(0.75,-8,-8,3);
             requestOpModeStop();
        }
 
@@ -146,8 +151,9 @@ public class ChungusDoubleCrater extends LinearOpMode {
             mecaDrive(0.5,4,4,5);
             mecaDrive(0.5,-5.5,-5.5,5);
             strafe(0.25,24,10);
-            mecaDrive(0.5,6,-6,5);
-            mecaDrive(0.75,-36,-36,10);
+            mecaDrive(0.5,5,-5,5);
+            mecaDrive(0.75,-18,-18,10);
+            strafe(0.5,12,5);
             requestOpModeStop();
         }
     }
@@ -390,9 +396,9 @@ public class ChungusDoubleCrater extends LinearOpMode {
     public void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        actuatorMovement(1,-27,10);
+        //actuatorMovement(1,-27,10);
 
-        strafe(0.25,-3,5);
+        strafe(0.25,-2,5);
 
     }
 }

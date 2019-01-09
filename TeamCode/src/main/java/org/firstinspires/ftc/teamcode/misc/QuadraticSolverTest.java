@@ -21,7 +21,7 @@ public class QuadraticSolverTest
         if(d > 0)
         {
             System.out.println("Roots are real and unequal");
-            root1 = ( - b + Math.sqrt(d))/(2*a);
+            root1 = (-b + Math.sqrt(d))/(2*a);
             root2 = (-b - Math.sqrt(d))/(2*a);
             System.out.println("First root is: "+root1);
             System.out.println("Second root is: "+root2);
