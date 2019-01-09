@@ -25,7 +25,7 @@ public class ChungusDoubleCrater extends LinearOpMode {
     private DcMotor backRight;
     private DcMotor actuator;
     private DcMotor intake;
-    private CRServo outtake;
+    private Servo   outtake;
     private DcMotor pulley;
     private GoldAlignDetector detector;
 
@@ -51,7 +51,7 @@ public class ChungusDoubleCrater extends LinearOpMode {
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         actuator = hardwareMap.get(DcMotor.class, "actuator");
         intake = hardwareMap.get(DcMotor.class, "intake");
-        outtake = hardwareMap.get(CRServo.class, "outtake");
+        outtake = hardwareMap.get(Servo.class, "outtake");
         pulley = hardwareMap.get(DcMotor.class, "pulley");
 
 
@@ -301,7 +301,7 @@ public class ChungusDoubleCrater extends LinearOpMode {
 
 
 
-    private void motorTelemetryPower()
+    public void motorTelemetryPower()
     {
         telemetry.addData("FrontLeftPower",frontLeft.getPower());
         telemetry.addData("FrontRightPower",frontRight.getPower());
@@ -312,7 +312,7 @@ public class ChungusDoubleCrater extends LinearOpMode {
 
 
 
-    private void allMotorsResetEncoder()
+    public void allMotorsResetEncoder()
     {
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -322,7 +322,7 @@ public class ChungusDoubleCrater extends LinearOpMode {
 
 
 
-    private void allMotorsZero()
+    public void allMotorsZero()
     {
         frontRight.setPower(0);
         frontLeft.setPower(0);
@@ -332,7 +332,7 @@ public class ChungusDoubleCrater extends LinearOpMode {
 
 
 
-    private void allMotorsToPosition()
+    public void allMotorsToPosition()
     {
         frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -342,7 +342,7 @@ public class ChungusDoubleCrater extends LinearOpMode {
 
 
 
-    private void allMotorsRunUsing()
+    public void allMotorsRunUsing()
     {
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -352,7 +352,7 @@ public class ChungusDoubleCrater extends LinearOpMode {
 
 
 
-    private void actuatorMovement(double speed, double inches, double timeoutS){
+    public void actuatorMovement(double speed, double inches, double timeoutS){
 
         int newActuatorTarget;
 
@@ -387,7 +387,7 @@ public class ChungusDoubleCrater extends LinearOpMode {
         }
     }
 
-    private void unlatch()
+    public void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         actuatorMovement(1,-27,10);

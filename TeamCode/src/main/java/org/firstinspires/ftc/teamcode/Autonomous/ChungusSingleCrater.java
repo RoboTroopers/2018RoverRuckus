@@ -1,4 +1,3 @@
-
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -25,7 +24,7 @@ public class ChungusSingleCrater extends LinearOpMode {
     private DcMotor backRight;
     private DcMotor actuator;
     private DcMotor intake;
-    private CRServo outtake;
+    private Servo   outtake;
     private DcMotor pulley;
     private GoldAlignDetector detector;
 
@@ -51,7 +50,7 @@ public class ChungusSingleCrater extends LinearOpMode {
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         actuator = hardwareMap.get(DcMotor.class, "actuator");
         intake = hardwareMap.get(DcMotor.class, "intake");
-        outtake = hardwareMap.get(CRServo.class, "outtake");
+        outtake = hardwareMap.get(Servo.class, "outtake");
         pulley = hardwareMap.get(DcMotor.class, "pulley");
 
 

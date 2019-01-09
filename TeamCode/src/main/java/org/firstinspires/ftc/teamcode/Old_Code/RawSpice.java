@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Disabled
 @TeleOp(name = "Spice MemesTHETHIRDONE", group = "Working")
-public class RawSpiceMeme extends LinearOpMode {
+public class RawSpice extends LinearOpMode {
 
     private DcMotor        left_drive;
     private DcMotor        right_drive;

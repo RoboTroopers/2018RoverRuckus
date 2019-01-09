@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 @Disabled
 @Autonomous(name = "Literally PepeHands But Android", group = "Old")
 
-public class FirstQualCode extends LinearOpMode {
+public class FirstQualAuto extends LinearOpMode {
 
     private ElapsedTime       runtime = new ElapsedTime();
 
