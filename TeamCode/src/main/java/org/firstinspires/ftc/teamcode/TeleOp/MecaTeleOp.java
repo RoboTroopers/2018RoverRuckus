@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,13 +12,7 @@ public class MecaTeleOp extends LinearOpMode {
 
     private ElapsedTime    runtime = new ElapsedTime();
 
-    private DcMotor        frontLeft;
-    private DcMotor        frontRight;
-    private DcMotor        backLeft;
-    private DcMotor        backRight;
-    private DcMotor        actuator;
-    private DcMotor        pulley;
-    private DcMotor        intake;
+    private DcMotor        frontLeft, frontRight, backLeft, backRight, actuator, pulley, intake;
     private Servo          outtake;
 
 
@@ -57,8 +49,8 @@ public class MecaTeleOp extends LinearOpMode {
 
         while (opModeIsActive())
         {
-            actuator.setPower(gamepad2.right_stick_y);
-            pulley.setPower(gamepad2.left_stick_y);
+            actuator.setPower(gamepad2.left_stick_y);
+            pulley.setPower(gamepad2.right_stick_y);
 
             int intakeVar;
 
@@ -79,27 +71,39 @@ public class MecaTeleOp extends LinearOpMode {
 
             intake.setPower(intakeVar);
 
-            if(gamepad2.a)
+            if(gamepad2.left_trigger == 1)
+            {
+                outtake.setPosition(0.35);
+                sleep(500);
+            }
+
+            else if(gamepad2.right_trigger == 1)
+            {
+                outtake.setPosition(0.175);
+                sleep(500);
+            }
+
+            else
             {
                 outtake.setPosition(0.01);
             }
 
-            else if(gamepad2.b)
+            /*if(gamepad2.y)
             {
-                outtake.setPosition(0.99);
+                runtime.reset();
+                outtake.setPosition(0.15);
             }
-
-            //TODO: EDIT THESE 2:
 
             else if(gamepad2.a)
             {
-                outtake.setPosition(0.5);
+                runtime.reset();
+                outtake.setPosition(0.35)
             }
 
-            else if(gamepad2.x)
+            if(runtime.seconds() < 2)
             {
-                outtake.setPosition(0.35);
-            }
+                outtake.setPosition(0.01);
+            }*/
 
 
             double threshold = 0.157;
