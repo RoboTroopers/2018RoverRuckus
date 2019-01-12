@@ -152,13 +152,24 @@ public class ChungusDoubleCrater extends LinearOpMode {
 
         else {
             strafe(0.25,10,5);
-            intake.setPower
+            intake.setPower(-1);
             mecaDrive(0.5,4,4,5);
+            intake.setPower(1);
             mecaDrive(0.5,-5.5,-5.5,5);
             strafe(0.25,24,10);
             mecaDrive(0.5,5,-5,5);
             mecaDrive(0.75,-18,-18,10);
+            pulley.setPower(-1);
+            outtake.setPosition(0.35);
+            sleep(500);
+            pulley.setPower(0);
+            outtake.setPosition(0.0);
+            sleep(100);
             strafe(0.5,12,5);
+            intake.setPower(-1);
+            mecaDrive(0.5,4,4,5);
+            mecaDrive(0.5,-4,-4,5);
+            intake.setPower(0);
             requestOpModeStop();
         }
     }
