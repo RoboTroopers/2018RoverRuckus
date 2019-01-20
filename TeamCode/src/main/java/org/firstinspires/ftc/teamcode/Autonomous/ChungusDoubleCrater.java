@@ -1,10 +1,9 @@
-
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -28,7 +27,6 @@ public class ChungusDoubleCrater extends LinearOpMode {
     private Servo   outtake;
     private DcMotor pulley;
     private GoldAlignDetector detector;
-
 
 
     private static final double COUNTS_PER_MOTOR_REV = 1440; //counts per rotation for encoder
@@ -104,8 +102,6 @@ public class ChungusDoubleCrater extends LinearOpMode {
         telemetry.update();
 
 
-
-
         unlatch();
 
         allMotorsResetEncoder();
@@ -115,60 +111,85 @@ public class ChungusDoubleCrater extends LinearOpMode {
         strafe(0.25,-8,10);
 
         if (detector.getAligned()) {
-            intake.setPower(-1);
+            intake.setPower(1);
             mecaDrive(0.5,4,4,5);
             intake.setPower(0);
             mecaDrive(0.5,-5.5,-5.5,5);
-            strafe(0.25,38,10);
-            mecaDrive(0.5,5.25,-5.25,5);
+            strafe(0.25,42,10);
+            mecaDrive(0.5,5.375,-5.375,5);
             mecaDrive(0.75,-7,-7,10);
-            strafe(0.5,-6.5,5);
-            strafe(0.5,6.5,5);
-            mecaDrive(0.5,-16,-16,10);
+            strafe(0.5,-7.5,5);
+            strafe(0.5,7.5,5);
+            mecaDrive(0.5,-18,-18,10);
+            pulley.setPower(1);
+            outtake.setPosition(0.35);
+            sleep(1000);
+            outtake.setPosition(0);
+            sleep(500);
+            outtake.setPosition(0.35);
+            sleep(500);
             pulley.setPower(-1);
+            outtake.setPosition(0.0);
             sleep(500);
             requestOpModeStop();
         }
 
         else {
-            strafe(0.25,11,5);
+            strafe(0.25,10.5,5);
         }
 
         if (detector.getAligned()) {
-            intake.setPower(-1);
+            intake.setPower(1);
             mecaDrive(0.5,4,4,5);
             intake.setPower(0);
             mecaDrive(0.3,-5.5,-5.5,5);
-            strafe(0.25,28,10);
+            strafe(0.25,31.5,10);
             mecaDrive(0.5,5,-5,5);
             mecaDrive(0.5,-18,-18,10);
-            strafe(0.5,-16,5);
-            strafe(0.5,14,5);
-            mecaDrive(0.75,-8,-8,3);
+            strafe(0.5,-16.5,5);
+            intake.setPower(1);
+            mecaDrive(0.5,6,6,5);
+            intake.setPower(0);
+            mecaDrive(0.5,-7,-7,5);
+            strafe(0.5,12,5);
+            mecaDrive(0.75,-2,-2,3);
+            pulley.setPower(1);
+            outtake.setPosition(0.35);
+            sleep(1000);
+            outtake.setPosition(0);
+            sleep(500);
+            outtake.setPosition(0.35);
+            sleep(500);
             pulley.setPower(-1);
+            outtake.setPosition(0.0);
             sleep(500);
             requestOpModeStop();
-       }
+        }
 
         else {
-            strafe(0.25,10,5);
-            intake.setPower(-1);
-            mecaDrive(0.5,4,4,5);
+            strafe(0.25,9,5);
             intake.setPower(1);
+            mecaDrive(0.5,4,4,5);
+            intake.setPower(0);
             mecaDrive(0.5,-5.5,-5.5,5);
-            strafe(0.25,24,10);
+            strafe(0.25,22.5,10);
             mecaDrive(0.5,5,-5,5);
-            mecaDrive(0.75,-18,-18,10);
-            pulley.setPower(-1);
+            mecaDrive(0.75,-21,-21,10);
+            pulley.setPower(1);
+            outtake.setPosition(0.35);
+            sleep(1000);
+            pulley.setPower(0.5);
+            outtake.setPosition(0);
+            sleep(1000);
             outtake.setPosition(0.35);
             sleep(500);
             pulley.setPower(0);
             outtake.setPosition(0.0);
-            sleep(100);
-            strafe(0.5,12,5);
-            intake.setPower(-1);
-            mecaDrive(0.5,4,4,5);
-            mecaDrive(0.5,-4,-4,5);
+            sleep(500);
+            pulley.setPower(0);
+            strafe(0.5,-24,5);
+            intake.setPower(1);
+            mecaDrive(0.5,6,6,5);
             intake.setPower(0);
             requestOpModeStop();
         }
@@ -412,9 +433,9 @@ public class ChungusDoubleCrater extends LinearOpMode {
     public void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        actuatorMovement(1,-27,10);
+        actuatorMovement(1,-115,10);
 
-        strafe(0.25,-2,5);
+        strafe(0.25,-2.5,5);
 
     }
 }

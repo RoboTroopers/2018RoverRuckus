@@ -13,7 +13,7 @@ public class MecaTeleOp extends LinearOpMode {
     private ElapsedTime    runtime = new ElapsedTime();
 
     private DcMotor        frontLeft, frontRight, backLeft, backRight, actuator, pulley, intake;
-    private Servo          outtake;
+    private Servo          outtake, nLatch;
 
 
 
@@ -32,7 +32,7 @@ public class MecaTeleOp extends LinearOpMode {
         pulley = hardwareMap.get(DcMotor.class, "pulley");
         intake = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(Servo.class, "outtake");
-
+        nLatch = hardwareMap.get(Servo.class, "nLatch");
 
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
@@ -44,11 +44,19 @@ public class MecaTeleOp extends LinearOpMode {
 
         waitForStart();
 
+
+
         if (opModeIsActive()) {
         }
 
         while (opModeIsActive())
         {
+
+
+            if(gamepad2.dpad_down)
+            {
+                nLatch.setPosition(0.0);
+            }
             actuator.setPower(gamepad2.left_stick_y);
             pulley.setPower(gamepad2.right_stick_y);
 
@@ -139,6 +147,7 @@ public class MecaTeleOp extends LinearOpMode {
             telemetry.addData("back right power", backRight.getPower());
             telemetry.addData("intake power", intake.getPower());
             telemetry.addData("outtake position", outtake.getPosition());
+            telemetry.addData("nLatch position", nLatch.getPosition());
             telemetry.update();
 
         }
