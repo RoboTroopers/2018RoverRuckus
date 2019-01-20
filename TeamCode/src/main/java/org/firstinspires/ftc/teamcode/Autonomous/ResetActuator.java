@@ -101,7 +101,16 @@ public class ResetActuator extends LinearOpMode {
         telemetry.addData("X Pos", detector.getXPosition()); // Gold X position.
         telemetry.update();
 
-        actuatorMovement(1, 27, 5);
+        actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        actuator.setTargetPosition(-2770);
+        actuator.setPower(1);
+        while(actuator.isBusy() && actuator.getCurrentPosition() < actuator.getTargetPosition())
+        {
+            telemetry.addData("actuator is moving to position", actuator.getCurrentPosition());
+            telemetry.update();
+        }
+        actuator.setPower(0);
 
 
     }
@@ -112,7 +121,7 @@ public class ResetActuator extends LinearOpMode {
         int newActuatorTarget;
 
         if (opModeIsActive()) {
-            newActuatorTarget = actuator.getCurrentPosition() + (int) (inches * ACTUATOR_COUNTS_PER_INCH);
+            newActuatorTarget = actuator.getCurrentPosition() + (int)(inches * ACTUATOR_COUNTS_PER_INCH);
             actuator.setTargetPosition(newActuatorTarget);
 
             actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);

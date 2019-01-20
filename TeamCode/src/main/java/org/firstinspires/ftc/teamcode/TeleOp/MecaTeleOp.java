@@ -38,6 +38,8 @@ public class MecaTeleOp extends LinearOpMode {
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
         pulley.setDirection(DcMotor.Direction.REVERSE);
+        actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        actuator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
 
@@ -148,6 +150,7 @@ public class MecaTeleOp extends LinearOpMode {
             telemetry.addData("intake power", intake.getPower());
             telemetry.addData("outtake position", outtake.getPosition());
             telemetry.addData("nLatch position", nLatch.getPosition());
+            telemetry.addData("actuator pos", actuator.getCurrentPosition());
             telemetry.update();
 
         }
