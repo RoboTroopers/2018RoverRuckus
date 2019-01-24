@@ -89,7 +89,7 @@ public class MecaTeleOp extends LinearOpMode {
 
             else if(gamepad2.right_trigger == 1)
             {
-                outtake.setPosition(0.175);
+                outtake.setPosition(0.185);
                 sleep(500);
             }
 

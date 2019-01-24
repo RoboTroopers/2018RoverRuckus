@@ -27,6 +27,7 @@ public class ChungusSingleCrater extends LinearOpMode {
     private Servo   outtake;
     private DcMotor pulley;
     private GoldAlignDetector detector;
+    private DigitalChannel limitSwitch;
 
 
 
@@ -71,6 +72,8 @@ public class ChungusSingleCrater extends LinearOpMode {
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
 
+        limitSwitch.setMode(DigitalChannel.Mode.INPUT);
+
 
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
 
@@ -102,8 +105,17 @@ public class ChungusSingleCrater extends LinearOpMode {
         telemetry.addData("X Pos", detector.getXPosition()); // Gold X position.
         telemetry.update();
 
+        int POSVAR = 0;
 
+        if(!limitSwitch.getState())
+        {
+            POSVAR = 1;
+        }
 
+        if(limitSwitch.getState() == true)
+        {
+            POSVAR = 2;
+        }
 
         unlatch();
 
@@ -113,30 +125,102 @@ public class ChungusSingleCrater extends LinearOpMode {
         mecaDrive(0.25, 7.5, 7.5, 5);
         strafe(0.25,-8,10);
 
-        if (detector.getAligned()) {
-            intake.setPower(0.5);
-            mecaDrive(0.8,20,20,5);
-            intake.setPower(0);
-            requestOpModeStop();
-        }
+        switch(POSVAR)
+        {
+            case 1:
+                if (detector.getAligned()) {
+                    intake.setPower(0.5);
+                    mecaDrive(0.8,20,20,5);
+                    intake.setPower(0);
+                    requestOpModeStop();
+                }
 
-        else {
-            strafe(0.25,10,5);
-        }
+                else {
+                    strafe(0.25,10,5);
+                }
 
-        if (detector.getAligned()) {
-            intake.setPower(0.5);
-            mecaDrive(0.8,20,20,5);
-            intake.setPower(0);
-            requestOpModeStop();
-        }
+                if (detector.getAligned()) {
+                    intake.setPower(0.5);
+                    mecaDrive(0.8,20,20,5);
+                    intake.setPower(0);
+                    requestOpModeStop();
+                }
 
-        else {
-            strafe(0.25,11,5);
-            intake.setPower(0.5);
-            mecaDrive(0.8,20,20,5);
-            intake.setPower(0);
-            requestOpModeStop();
+                else {
+                    strafe(0.25,11,5);
+                    intake.setPower(0.5);
+                    mecaDrive(0.8,20,20,5);
+                    intake.setPower(0);
+                    requestOpModeStop();
+                }
+
+                break;
+
+            case 2:
+
+                if (detector.getAligned()) {
+                    intake.setPower(0.5);
+                    mecaDrive(0.8,20,20,5);
+                    intake.setPower(0);
+                    mecaDrive(0.5,6,-6,5);
+                    strafe(0.5,-5,5);
+                    mecaDrive(0.5,12,12,5);
+                    pulley.setPower(1);
+                    outtake.setPosition(0.35);
+                    sleep(1000);
+                    outtake.setPosition(0);
+                    sleep(500);
+                    outtake.setPosition(0.35);
+                    sleep(500);
+                    pulley.setPower(-1);
+                    outtake.setPosition(0.0);
+                    sleep(500);
+                    requestOpModeStop();
+                }
+
+                else {
+                    strafe(0.25,10,5);
+                }
+
+                if (detector.getAligned()) {
+                    intake.setPower(-1);
+                    mecaDrive(0.8,15,15,5);
+                    intake.setPower(0);
+                    pulley.setPower(1);
+                    outtake.setPosition(0.35);
+                    sleep(1000);
+                    outtake.setPosition(0);
+                    sleep(500);
+                    outtake.setPosition(0.35);
+                    sleep(500);
+                    pulley.setPower(-1);
+                    outtake.setPosition(0.0);
+                    sleep(500);
+                    requestOpModeStop();
+                }
+
+                else {
+                    strafe(0.25,11,5);
+                    intake.setPower(-1);
+                    mecaDrive(0.8,12,12,5);
+                    intake.setPower(0);
+                    mecaDrive(0.5,-6,6,5);
+                    strafe(0.5,-5,5);
+                    mecaDrive(0.5,12,12,5);
+                    pulley.setPower(1);
+                    outtake.setPosition(0.35);
+                    sleep(1000);
+                    outtake.setPosition(0);
+                    sleep(500);
+                    outtake.setPosition(0.35);
+                    sleep(500);
+                    pulley.setPower(-1);
+                    outtake.setPosition(0.0);
+                    sleep(500);
+                    requestOpModeStop();
+                }
+
+
         }
     }
 
@@ -375,12 +459,10 @@ public class ChungusSingleCrater extends LinearOpMode {
         }
     }
 
-    private void unlatch()
+    public void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //actuatorMovement(1,-27,10);
-
-        strafe(0.25,-2.75,5);
-
+        actuatorMovement(1,-39,10);
+        strafe(0.25,-2.5,5);
     }
 }

@@ -30,18 +30,16 @@ public class FirstQualAuto extends LinearOpMode {
 
 
 
-    static final double COUNTS_PER_MOTOR_REV = 1440; //counts per rotation for encoder
-    static final double DRIVE_GEAR_REDUCTION = 1.0;
-    static final double WHEEL_DIAMETER_INCHES = 4.0;
-    static final double ACTUATOR_GEAR_DIAMETER = 1.5;
-    static final double PI = 3.14159265359;
-    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * PI);
-    static final double DRIVE_SPEED = 1.0;
-    static final double TURN_SPEED = 0.75;
-    static final double LONG_DISTANCE_SPEED = 0.75;
-    static final double ACTUATOR_COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (ACTUATOR_GEAR_DIAMETER * PI);
-
-
+    private static final double COUNTS_PER_MOTOR_REV = 1440; //counts per rotation for encoder
+    private static final double DRIVE_GEAR_REDUCTION = 1.0;
+    private static final double WHEEL_DIAMETER_INCHES = 4.0;
+    private static final double ACTUATOR_GEAR_DIAMETER = 1.5;
+    private static final double PI = 3.14159265359;
+    private static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * PI);
+    private static final double DRIVE_SPEED = 1.0;
+    private static final double TURN_SPEED = 0.75;
+    private static final double LONG_DISTANCE_SPEED = 0.75;
+    private static final double ACTUATOR_COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (ACTUATOR_GEAR_DIAMETER * PI);
     @Override
 
     public void runOpMode()
