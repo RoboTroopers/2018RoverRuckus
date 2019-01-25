@@ -101,9 +101,12 @@ public class ResetActuator extends LinearOpMode {
         telemetry.addData("X Pos", detector.getXPosition()); // Gold X position.
         telemetry.update();
 
+        actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
         actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        actuator.setTargetPosition(-2770);
+        actuator.setTargetPosition(13000);
         actuator.setPower(1);
         while(actuator.isBusy() && actuator.getCurrentPosition() < actuator.getTargetPosition())
         {
