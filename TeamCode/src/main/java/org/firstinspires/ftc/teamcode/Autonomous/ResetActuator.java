@@ -115,6 +115,10 @@ public class ResetActuator extends LinearOpMode {
         }
         actuator.setPower(0);
 
+        pulley.setPower(-1);
+        sleep(1000);
+        pulley.setPower(0);
+
 
     }
 

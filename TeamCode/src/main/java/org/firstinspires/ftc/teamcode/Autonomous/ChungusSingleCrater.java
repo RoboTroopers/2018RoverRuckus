@@ -12,7 +12,7 @@ import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 
 
-@Autonomous(name = "Chungus Single Crater", group = "Working")
+@Autonomous(name = "Chungus Single Pressed = Depot", group = "Working")
 
 public class ChungusSingleCrater extends LinearOpMode {
 
@@ -53,6 +53,7 @@ public class ChungusSingleCrater extends LinearOpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(Servo.class, "outtake");
         pulley = hardwareMap.get(DcMotor.class, "pulley");
+        limitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitch");
 
 
         telemetry.addData("Status", "Resetting Encoders");
@@ -83,7 +84,7 @@ public class ChungusSingleCrater extends LinearOpMode {
         detector.useDefaults(); // Set detector to use default settings
 
         // Optional tuning
-        detector.alignSize = 350; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
+        detector.alignSize = 500; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
         detector.alignPosOffset = 50; // How far from center frame to offset this alignment zone.
         detector.downscale = 0.4; // How much to downscale the input frames
 
@@ -107,12 +108,12 @@ public class ChungusSingleCrater extends LinearOpMode {
 
         int POSVAR = 0;
 
-        if(!limitSwitch.getState())
+        if(limitSwitch.getState())
         {
             POSVAR = 1;
         }
 
-        if(limitSwitch.getState() == true)
+        if(!limitSwitch.getState())
         {
             POSVAR = 2;
         }
@@ -147,7 +148,7 @@ public class ChungusSingleCrater extends LinearOpMode {
                 }
 
                 else {
-                    strafe(0.25,11,5);
+                    strafe(0.25,10,5);
                     intake.setPower(0.5);
                     mecaDrive(0.8,20,20,5);
                     intake.setPower(0);
@@ -159,12 +160,11 @@ public class ChungusSingleCrater extends LinearOpMode {
             case 2:
 
                 if (detector.getAligned()) {
-                    intake.setPower(0.5);
-                    mecaDrive(0.8,20,20,5);
+                    intake.setPower(-1);
+                    mecaDrive(0.8,16,16,5);
                     intake.setPower(0);
-                    mecaDrive(0.5,6,-6,5);
-                    strafe(0.5,-5,5);
-                    mecaDrive(0.5,12,12,5);
+                    mecaDrive(0.5,-6,6,5);
+                    mecaDrive(0.5,8,8,5);
                     pulley.setPower(1);
                     outtake.setPosition(0.35);
                     sleep(1000);
@@ -184,7 +184,7 @@ public class ChungusSingleCrater extends LinearOpMode {
 
                 if (detector.getAligned()) {
                     intake.setPower(-1);
-                    mecaDrive(0.8,15,15,5);
+                    mecaDrive(0.8,18,18,5);
                     intake.setPower(0);
                     pulley.setPower(1);
                     outtake.setPosition(0.35);
@@ -204,8 +204,8 @@ public class ChungusSingleCrater extends LinearOpMode {
                     intake.setPower(-1);
                     mecaDrive(0.8,12,12,5);
                     intake.setPower(0);
-                    mecaDrive(0.5,-6,6,5);
-                    strafe(0.5,-5,5);
+                    mecaDrive(0.5,5.7,-5.7,5);
+                    strafe(0.25,2,5);
                     mecaDrive(0.5,12,12,5);
                     pulley.setPower(1);
                     outtake.setPosition(0.35);
@@ -462,7 +462,7 @@ public class ChungusSingleCrater extends LinearOpMode {
     public void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        actuatorMovement(1,-39,10);
-        strafe(0.25,-2.5,5);
+        actuatorMovement(1,-55,10);
+        strafe(0.25,-2,5);
     }
 }

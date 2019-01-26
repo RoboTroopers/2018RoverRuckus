@@ -438,7 +438,7 @@ public class ChungusDoubleCrater extends LinearOpMode {
     public void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        actuatorMovement(1,-43,10);
+        actuatorMovement(1,-55,10);
         strafe(0.25,-2,5);
     }
 }

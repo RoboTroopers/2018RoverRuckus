@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,6 +15,7 @@ public class MecaTeleOp extends LinearOpMode {
 
     private DcMotor        frontLeft, frontRight, backLeft, backRight, actuator, pulley, intake;
     private Servo          outtake, nLatch;
+    private DigitalChannel limitSwitch;
 
 
 
@@ -33,6 +35,7 @@ public class MecaTeleOp extends LinearOpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(Servo.class, "outtake");
         nLatch = hardwareMap.get(Servo.class, "nLatch");
+        limitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitch");
 
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
@@ -40,6 +43,8 @@ public class MecaTeleOp extends LinearOpMode {
         pulley.setDirection(DcMotor.Direction.REVERSE);
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         actuator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        limitSwitch.setMode(DigitalChannel.Mode.INPUT);
 
 
 
@@ -149,7 +154,11 @@ public class MecaTeleOp extends LinearOpMode {
             telemetry.addData("back right power", backRight.getPower());
             telemetry.addData("intake power", intake.getPower());
             telemetry.addData("outtake position", outtake.getPosition());
-            telemetry.addData("nLatch position", nLatch.getPosition());
+            if (limitSwitch.getState()) {
+                telemetry.addData("Digital Touch", "Is Not Pressed");
+            } else {
+                telemetry.addData("Digital Touch", "Is Pressed");
+            }
             telemetry.addData("actuator pos", actuator.getCurrentPosition());
             telemetry.update();
 

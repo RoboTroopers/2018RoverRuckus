@@ -115,12 +115,12 @@ public class FirstQualAuto extends LinearOpMode {
 
         int POSVAR = 0;
 
-        if(limitSwitch.getState() == false)
+        if(limitSwitch.getState())
         {
             POSVAR = 1;
         }
 
-        if(limitSwitch.getState() == true)
+        if(!limitSwitch.getState())
         {
             POSVAR = 2;
         }
