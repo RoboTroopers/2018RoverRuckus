@@ -150,11 +150,11 @@ public class ChungusDoubleCrater extends LinearOpMode {
             mecaDrive(0.5,4,4,5);
             intake.setPower(0);
             mecaDrive(0.3,-5.5,-5.5,5);
-            strafe(0.25,30.5,10);
+            strafe(0.25,32,10);
             mecaDrive(0.5,5,-5,5);
             mecaDrive(0.5,-18,-18,10);
-            strafe(0.5,-14.25,5);
-            mecaDrive(0.5,6,6,5);
+            strafe(0.5,-11.5,5);
+            mecaDrive(0.5,5,5,5);
             mecaDrive(0.5,-7,-7,5);
             strafe(0.5,12,5);
             mecaDrive(0.75,-2,-2,3);
@@ -177,7 +177,7 @@ public class ChungusDoubleCrater extends LinearOpMode {
             mecaDrive(0.5,4,4,5);
             intake.setPower(0);
             mecaDrive(0.5,-5.5,-5.5,5);
-            strafe(0.25,21.25,10);
+            strafe(0.25,22.25,10);
             mecaDrive(0.5,4.8,-4.8,5);
             mecaDrive(0.75,-21,-21,10);
             pulley.setPower(1);
@@ -192,8 +192,8 @@ public class ChungusDoubleCrater extends LinearOpMode {
             outtake.setPosition(0.0);
             sleep(500);
             pulley.setPower(0);
-            strafe(0.25,-23,5);
-            intake.setPower(-1);
+            strafe(0.25,-22 ,5);
+            intake.setPower(1);
             mecaDrive(0.5,5,5,5);
             intake.setPower(0);
             requestOpModeStop();
@@ -438,7 +438,7 @@ public class ChungusDoubleCrater extends LinearOpMode {
     public void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        actuatorMovement(1,-55,10);
+        actuatorMovement(1,-57,10);
         strafe(0.25,-2,5);
     }
 }

@@ -130,7 +130,7 @@ public class ChungusSingleCrater extends LinearOpMode {
         {
             case 1:
                 if (detector.getAligned()) {
-                    intake.setPower(0.5);
+                    intake.setPower(1);
                     mecaDrive(0.8,20,20,5);
                     intake.setPower(0);
                     requestOpModeStop();
@@ -141,7 +141,7 @@ public class ChungusSingleCrater extends LinearOpMode {
                 }
 
                 if (detector.getAligned()) {
-                    intake.setPower(0.5);
+                    intake.setPower(1);
                     mecaDrive(0.8,20,20,5);
                     intake.setPower(0);
                     requestOpModeStop();
@@ -149,7 +149,7 @@ public class ChungusSingleCrater extends LinearOpMode {
 
                 else {
                     strafe(0.25,10,5);
-                    intake.setPower(0.5);
+                    intake.setPower(1);
                     mecaDrive(0.8,20,20,5);
                     intake.setPower(0);
                     requestOpModeStop();
@@ -462,7 +462,7 @@ public class ChungusSingleCrater extends LinearOpMode {
     public void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        actuatorMovement(1,-55,10);
-        strafe(0.25,-2,5);
+        actuatorMovement(1,-57,10);
+        strafe(0.25,-4,5);
     }
 }
