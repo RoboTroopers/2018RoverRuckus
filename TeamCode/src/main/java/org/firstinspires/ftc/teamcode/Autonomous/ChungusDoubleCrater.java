@@ -119,9 +119,9 @@ public class ChungusDoubleCrater extends LinearOpMode {
             mecaDrive(0.5,5,-5,5);
             mecaDrive(0.75,-7,-7,10);
             mecaDrive(0.5,10,-10,5);
-            strafe(0.25,-4,5);
+            //strafe(0.25,-2,5);
             intake.setPower(-1);
-            mecaDrive(0.5,5,5,5);
+            mecaDrive(0.5,3,3,5);
             mecaDrive(0.5,-3.5,-3.5,5);
             intake.setPower(0);
             strafe(0.5,-22,10);

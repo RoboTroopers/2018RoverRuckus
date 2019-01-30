@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -14,7 +15,8 @@ public class MecaTeleOp extends LinearOpMode {
     private ElapsedTime    runtime = new ElapsedTime();
 
     private DcMotor        frontLeft, frontRight, backLeft, backRight, actuator, pulley, intake;
-    private Servo          outtake, nLatch;
+    private Servo          outtake, arm;
+    private CRServo        armIntake;
     private DigitalChannel limitSwitch;
 
 
@@ -34,8 +36,9 @@ public class MecaTeleOp extends LinearOpMode {
         pulley = hardwareMap.get(DcMotor.class, "pulley");
         intake = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(Servo.class, "outtake");
-        nLatch = hardwareMap.get(Servo.class, "nLatch");
         limitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitch");
+        arm = hardwareMap.get(Servo.class, "arm");
+        armIntake = hardwareMap.get(CRServo.class, "armIntake");
 
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
@@ -56,14 +59,12 @@ public class MecaTeleOp extends LinearOpMode {
         if (opModeIsActive()) {
         }
 
+        arm.setPosition(1);
+
         while (opModeIsActive())
         {
 
 
-            if(gamepad2.dpad_down)
-            {
-                nLatch.setPosition(0.0);
-            }
             actuator.setPower(gamepad2.left_stick_y);
             pulley.setPower(gamepad2.right_stick_y);
 
@@ -86,6 +87,7 @@ public class MecaTeleOp extends LinearOpMode {
 
             intake.setPower(intakeVar);
 
+
             if(gamepad2.left_trigger == 1)
             {
                 outtake.setPosition(0.35);
@@ -103,22 +105,37 @@ public class MecaTeleOp extends LinearOpMode {
                 outtake.setPosition(0.01);
             }
 
-            /*if(gamepad2.y)
+
+            if(gamepad1.left_trigger == 1)
             {
-                runtime.reset();
-                outtake.setPosition(0.15);
+                arm.setPosition(0.17);
             }
 
-            else if(gamepad2.a)
+            else if(gamepad1.right_trigger == 1)
             {
-                runtime.reset();
-                outtake.setPosition(0.35)
+                arm.setPosition(0.9);
             }
 
-            if(runtime.seconds() < 2)
+            else if(gamepad1.dpad_up)
             {
-                outtake.setPosition(0.01);
-            }*/
+                arm.setPosition(0.635);
+            }
+
+
+            if(gamepad1.left_bumper)
+            {
+                armIntake.setPower(-1);
+            }
+
+            else if(gamepad1.right_bumper)
+            {
+                armIntake.setPower(1);
+            }
+
+            else {
+                armIntake.setPower(0);
+            }
+
 
 
             double threshold = 0.157;
@@ -154,11 +171,13 @@ public class MecaTeleOp extends LinearOpMode {
             telemetry.addData("back right power", backRight.getPower());
             telemetry.addData("intake power", intake.getPower());
             telemetry.addData("outtake position", outtake.getPosition());
+
             if (limitSwitch.getState()) {
                 telemetry.addData("Digital Touch", "Is Not Pressed");
             } else {
                 telemetry.addData("Digital Touch", "Is Pressed");
             }
+
             telemetry.addData("actuator pos", actuator.getCurrentPosition());
             telemetry.update();
 

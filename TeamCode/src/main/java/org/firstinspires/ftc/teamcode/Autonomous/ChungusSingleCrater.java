@@ -24,8 +24,10 @@ public class ChungusSingleCrater extends LinearOpMode {
     private DcMotor backRight;
     private DcMotor actuator;
     private DcMotor intake;
-    private Servo   outtake;
     private DcMotor pulley;
+    private Servo   outtake;
+    private Servo   arm;
+    private CRServo armIntake;
     private GoldAlignDetector detector;
     private DigitalChannel limitSwitch;
 
@@ -54,6 +56,8 @@ public class ChungusSingleCrater extends LinearOpMode {
         outtake = hardwareMap.get(Servo.class, "outtake");
         pulley = hardwareMap.get(DcMotor.class, "pulley");
         limitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitch");
+        arm = hardwareMap.get(Servo.class, "arm");
+        armIntake = hardwareMap.get(CRServo.class, "armIntake");
 
 
         telemetry.addData("Status", "Resetting Encoders");
@@ -175,6 +179,9 @@ public class ChungusSingleCrater extends LinearOpMode {
                     pulley.setPower(-1);
                     outtake.setPosition(0.0);
                     sleep(500);
+                    strafe(0.25,24,5);
+                    mecaDrive(0.5,-6,6,5);
+                    armSlam(true);
                     requestOpModeStop();
                 }
 
@@ -196,6 +203,9 @@ public class ChungusSingleCrater extends LinearOpMode {
                     pulley.setPower(-1);
                     outtake.setPosition(0.0);
                     sleep(500);
+                    mecaDrive(0.25,-10,10,5);
+                    mecaDrive(0.25,24,24,10);
+                    armSlam(true);
                     requestOpModeStop();
                 }
 
@@ -217,6 +227,10 @@ public class ChungusSingleCrater extends LinearOpMode {
                     pulley.setPower(-1);
                     outtake.setPosition(0.0);
                     sleep(500);
+                    mecaDrive(0.5,-24,-24,10);
+                    strafe(0.5,-4,5);
+                    mecaDrive(0.5,16,-16,10);
+                    armSlam(true);
                     requestOpModeStop();
                 }
 
@@ -464,5 +478,28 @@ public class ChungusSingleCrater extends LinearOpMode {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         actuatorMovement(1,-57,10);
         strafe(0.25,-4,5);
+    }
+
+    public void armSlam(boolean x)
+    {
+        String seed;
+        if(x)
+        {
+            seed = "down";
+        }
+
+        else {
+            seed = "up";
+        }
+
+        if(seed.equals("down"))
+        {
+            arm.setPosition(0.17);
+        }
+
+        else
+        {
+           arm.setPosition(0.9);
+        }
     }
 }
