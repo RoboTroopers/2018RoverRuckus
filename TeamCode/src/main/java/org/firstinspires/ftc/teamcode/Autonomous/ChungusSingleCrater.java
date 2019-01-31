@@ -164,11 +164,12 @@ public class ChungusSingleCrater extends LinearOpMode {
             case 2:
 
                 if (detector.getAligned()) {
-                    intake.setPower(-1);
-                    mecaDrive(0.8,16,16,5);
+                    intake.setPower(1);
+                    mecaDrive(0.8,14,14,5);
                     intake.setPower(0);
                     mecaDrive(0.5,-6,6,5);
-                    mecaDrive(0.5,8,8,5);
+                    strafe(0.5,-3,5);
+                    mecaDrive(0.5,12,12,5);
                     pulley.setPower(1);
                     outtake.setPosition(0.35);
                     sleep(1000);
@@ -176,12 +177,12 @@ public class ChungusSingleCrater extends LinearOpMode {
                     sleep(500);
                     outtake.setPosition(0.35);
                     sleep(500);
+                    strafe(0.25,65,10);
+                    mecaDrive(0.5,-10.5,10.5,5);
                     pulley.setPower(-1);
-                    outtake.setPosition(0.0);
                     sleep(500);
-                    strafe(0.25,24,5);
-                    mecaDrive(0.5,-6,6,5);
                     armSlam(true);
+                    sleep(500);
                     requestOpModeStop();
                 }
 
@@ -190,7 +191,7 @@ public class ChungusSingleCrater extends LinearOpMode {
                 }
 
                 if (detector.getAligned()) {
-                    intake.setPower(-1);
+                    intake.setPower(1);
                     mecaDrive(0.8,18,18,5);
                     intake.setPower(0);
                     pulley.setPower(1);
@@ -200,18 +201,15 @@ public class ChungusSingleCrater extends LinearOpMode {
                     sleep(500);
                     outtake.setPosition(0.35);
                     sleep(500);
-                    pulley.setPower(-1);
-                    outtake.setPosition(0.0);
-                    sleep(500);
-                    mecaDrive(0.25,-10,10,5);
-                    mecaDrive(0.25,24,24,10);
+                    mecaDrive(0.25,-15,15,5);
+                    mecaDriveWhilePulley(0.25,36,36,10);
                     armSlam(true);
                     requestOpModeStop();
                 }
 
                 else {
                     strafe(0.25,11,5);
-                    intake.setPower(-1);
+                    intake.setPower(1);
                     mecaDrive(0.8,12,12,5);
                     intake.setPower(0);
                     mecaDrive(0.5,5.7,-5.7,5);
@@ -224,12 +222,8 @@ public class ChungusSingleCrater extends LinearOpMode {
                     sleep(500);
                     outtake.setPosition(0.35);
                     sleep(500);
-                    pulley.setPower(-1);
-                    outtake.setPosition(0.0);
-                    sleep(500);
-                    mecaDrive(0.5,-24,-24,10);
-                    strafe(0.5,-4,5);
-                    mecaDrive(0.5,16,-16,10);
+                    mecaDrive(0.5,-21,21,10);
+                    mecaDriveWhilePulley(0.5,36,36,10);
                     armSlam(true);
                     requestOpModeStop();
                 }
@@ -476,8 +470,8 @@ public class ChungusSingleCrater extends LinearOpMode {
     public void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        actuatorMovement(1,-57,10);
-        strafe(0.25,-4,5);
+        actuatorMovement(1,-51.75,10);
+        strafe(0.25,-3,5);
     }
 
     public void armSlam(boolean x)
@@ -495,11 +489,98 @@ public class ChungusSingleCrater extends LinearOpMode {
         if(seed.equals("down"))
         {
             arm.setPosition(0.17);
+            sleep(1500);
         }
 
         else
         {
            arm.setPosition(0.9);
+           sleep(1500);
         }
     }
+
+    public void strafeWhileDown(double speed, double FRBLInches, double pulleySpeed, double pulleyTime, int timeoutS) {
+        int newFRBLTarget;
+        int newFLBRTarget;
+        double FLBRInches = FRBLInches * -1;
+
+        allMotorsResetEncoder();
+
+
+        if(opModeIsActive())
+        {
+            newFRBLTarget = (frontRight.getCurrentPosition() + backLeft.getCurrentPosition())/2 + (int)(FRBLInches * COUNTS_PER_INCH);
+            newFLBRTarget = (frontLeft.getCurrentPosition() + backRight.getCurrentPosition())/2 + (int)(FLBRInches * COUNTS_PER_INCH);
+
+            frontLeft.setTargetPosition(newFLBRTarget);
+            backRight.setTargetPosition(newFLBRTarget);
+            frontRight.setTargetPosition(newFRBLTarget);
+            backLeft.setTargetPosition(newFRBLTarget);
+
+            allMotorsToPosition();
+
+            runtime.reset();
+
+            frontRight.setPower(Math.abs(speed));
+            frontLeft.setPower(Math.abs(speed));
+            backLeft.setPower(Math.abs(speed));
+            backRight.setPower(Math.abs(speed));
+
+            while(opModeIsActive() && (runtime.seconds() < timeoutS)
+                    && (frontLeft.isBusy()) && (frontRight.isBusy()) &&
+                    (backLeft.isBusy()) && (backRight.isBusy()))
+            {
+                motorTelemetryPower();
+                pulley.setPower(0.5);
+            }
+
+            allMotorsZero();
+            allMotorsResetEncoder();
+            allMotorsRunUsing();
+        }
+    }
+
+    public void mecaDriveWhilePulley(double speed, double leftInches, double rightInches, double timeoutS){
+        int newLeftTarget;
+        int newRightTarget;
+
+        if(opModeIsActive())
+        {
+            newLeftTarget = (frontLeft.getCurrentPosition() + backLeft.getCurrentPosition())/2 + (int)(leftInches * COUNTS_PER_INCH);
+            newRightTarget = (frontRight.getCurrentPosition() + backRight.getCurrentPosition())/2 + (int)(rightInches * COUNTS_PER_INCH);
+
+            frontLeft.setTargetPosition(newLeftTarget);
+            backLeft.setTargetPosition(newLeftTarget);
+            frontRight.setTargetPosition(newRightTarget);
+            backRight.setTargetPosition(newRightTarget);
+
+            allMotorsToPosition();
+
+            runtime.reset();
+
+            frontLeft.setPower((Math.abs(speed)));
+            frontRight.setPower(Math.abs(speed));
+            backLeft.setPower(Math.abs(speed));
+            backRight.setPower(Math.abs(speed));
+
+            while(opModeIsActive() && (runtime.seconds() < timeoutS) &&
+                    (frontLeft.isBusy()) && (frontRight.isBusy()) &&
+                    (backLeft.isBusy()) && (backRight.isBusy()))
+            {
+                pulley.setPower(-0.5);
+                telemetry.addData("FrontLeftPower",frontLeft.getPower());
+                telemetry.addData("FrontRightPower",frontRight.getPower());
+                telemetry.addData("BackLeftPower",backLeft.getPower());
+                telemetry.addData("BackRightPower",backRight.getPower());
+                telemetry.update();
+            }
+
+            allMotorsZero();
+            allMotorsResetEncoder();
+            allMotorsRunUsing();
+
+
+        }
+    }
+
 }
