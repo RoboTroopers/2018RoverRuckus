@@ -177,7 +177,6 @@ public class ChungusSingleCrater extends LinearOpMode {
                     sleep(500);
                     outtake.setPosition(0.35);
                     sleep(500);
-                    mecaDrive(0.5,-2,-2,5);
                     strafe(0.25,52.5,10);
                     mecaDrive(0.5,-10.5,10.5,5);
                     pulley.setPower(-1);
@@ -187,7 +186,7 @@ public class ChungusSingleCrater extends LinearOpMode {
                 }
 
                 else {
-                    strafe(0.25,8.5,5);
+                    strafe(0.25,9,5);
                 }
 
                 if (detector.getAligned()) {
@@ -201,8 +200,9 @@ public class ChungusSingleCrater extends LinearOpMode {
                     sleep(500);
                     outtake.setPosition(0.35);
                     sleep(500);
-                    mecaDrive(0.25,-15,15,5);
-                    mecaDriveWhilePulley(0.25,38,38,10);
+                    mecaDrive(0.25,-14.5,14.5,5);
+                    strafe(0.5,-3,5);
+                    mecaDriveWhilePulley(0.5,38,38,10);
                     armSlam(true);
                     requestOpModeStop();
                 }
