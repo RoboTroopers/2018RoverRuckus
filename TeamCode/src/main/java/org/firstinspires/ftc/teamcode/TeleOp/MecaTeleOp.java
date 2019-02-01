@@ -14,8 +14,8 @@ public class MecaTeleOp extends LinearOpMode {
 
     private ElapsedTime    runtime = new ElapsedTime();
 
-    private DcMotor        frontLeft, frontRight, backLeft, backRight, actuator, pulley, intake;
-    private Servo          outtake, arm;
+    private DcMotor        frontLeft, frontRight, backLeft, backRight, actuator, pulley, intake, arm;
+    private Servo          outtake;
     private CRServo        armIntake;
     private DigitalChannel limitSwitch;
 
@@ -37,7 +37,7 @@ public class MecaTeleOp extends LinearOpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(Servo.class, "outtake");
         limitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitch");
-        arm = hardwareMap.get(Servo.class, "arm");
+        arm = hardwareMap.get(DcMotor.class, "arm");
         armIntake = hardwareMap.get(CRServo.class, "armIntake");
 
 
@@ -50,8 +50,6 @@ public class MecaTeleOp extends LinearOpMode {
         limitSwitch.setMode(DigitalChannel.Mode.INPUT);
 
 
-
-
         waitForStart();
 
 
@@ -59,11 +57,8 @@ public class MecaTeleOp extends LinearOpMode {
         if (opModeIsActive()) {
         }
 
-        arm.setPosition(1);
-
         while (opModeIsActive())
         {
-
 
             actuator.setPower(gamepad2.left_stick_y);
             pulley.setPower(gamepad2.right_stick_y);
@@ -106,28 +101,30 @@ public class MecaTeleOp extends LinearOpMode {
             }
 
 
-            if(gamepad1.left_trigger == 1)
-            {
-                arm.setPosition(0.17);
-            }
-
-            else if(gamepad1.right_trigger == 1)
-            {
-                arm.setPosition(0.9);
-            }
-
-            else if(gamepad1.dpad_up)
-            {
-                arm.setPosition(0.635);
-            }
 
 
             if(gamepad1.left_bumper)
             {
-                armIntake.setPower(-1);
+                arm.setPower(0.3);
             }
 
             else if(gamepad1.right_bumper)
+            {
+                arm.setPower(-0.3);
+            }
+
+            else {
+                arm.setPower(0);
+            }
+
+
+
+            if(gamepad1.left_trigger == 1)
+            {
+                armIntake.setPower(-1);
+            }
+
+            else if(gamepad1.right_trigger == 1)
             {
                 armIntake.setPower(1);
             }
@@ -171,6 +168,7 @@ public class MecaTeleOp extends LinearOpMode {
             telemetry.addData("back right power", backRight.getPower());
             telemetry.addData("intake power", intake.getPower());
             telemetry.addData("outtake position", outtake.getPosition());
+            telemetry.addData("arm power", arm.getPower());
 
             if (limitSwitch.getState()) {
                 telemetry.addData("Digital Touch", "Is Not Pressed");

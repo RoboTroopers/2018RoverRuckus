@@ -26,7 +26,7 @@ public class ChungusSingleCrater extends LinearOpMode {
     private DcMotor intake;
     private DcMotor pulley;
     private Servo   outtake;
-    private Servo   arm;
+    private DcMotor   arm;
     private CRServo armIntake;
     private GoldAlignDetector detector;
     private DigitalChannel limitSwitch;
@@ -56,7 +56,7 @@ public class ChungusSingleCrater extends LinearOpMode {
         outtake = hardwareMap.get(Servo.class, "outtake");
         pulley = hardwareMap.get(DcMotor.class, "pulley");
         limitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitch");
-        arm = hardwareMap.get(Servo.class, "arm");
+        arm = hardwareMap.get(DcMotor.class, "arm");
         armIntake = hardwareMap.get(CRServo.class, "armIntake");
 
 
@@ -128,7 +128,7 @@ public class ChungusSingleCrater extends LinearOpMode {
         allMotorsToPosition();
 
         mecaDrive(0.25, 7.5, 7.5, 5);
-        strafe(0.25,-8,10);
+        strafe(0.25,-7,10);
 
         switch(POSVAR)
         {
@@ -167,7 +167,7 @@ public class ChungusSingleCrater extends LinearOpMode {
                     intake.setPower(1);
                     mecaDrive(0.8,14,14,5);
                     intake.setPower(0);
-                    mecaDrive(0.5,-6,6,5);
+                    mecaDrive(0.5,-5.5,5.5,5);
                     strafe(0.5,-3,5);
                     mecaDrive(0.5,12,12,5);
                     pulley.setPower(1);
@@ -177,17 +177,17 @@ public class ChungusSingleCrater extends LinearOpMode {
                     sleep(500);
                     outtake.setPosition(0.35);
                     sleep(500);
-                    strafe(0.25,65,10);
+                    mecaDrive(0.5,-2,-2,5);
+                    strafe(0.25,52.5,10);
                     mecaDrive(0.5,-10.5,10.5,5);
                     pulley.setPower(-1);
                     sleep(500);
                     armSlam(true);
-                    sleep(500);
                     requestOpModeStop();
                 }
 
                 else {
-                    strafe(0.25,10,5);
+                    strafe(0.25,8.5,5);
                 }
 
                 if (detector.getAligned()) {
@@ -202,19 +202,18 @@ public class ChungusSingleCrater extends LinearOpMode {
                     outtake.setPosition(0.35);
                     sleep(500);
                     mecaDrive(0.25,-15,15,5);
-                    mecaDriveWhilePulley(0.25,36,36,10);
+                    mecaDriveWhilePulley(0.25,38,38,10);
                     armSlam(true);
                     requestOpModeStop();
                 }
 
                 else {
-                    strafe(0.25,11,5);
+                    strafe(0.5,11,5);
                     intake.setPower(1);
                     mecaDrive(0.8,12,12,5);
                     intake.setPower(0);
-                    mecaDrive(0.5,5.7,-5.7,5);
-                    strafe(0.25,2,5);
-                    mecaDrive(0.5,12,12,5);
+                    mecaDrive(0.5,6,-6,5);
+                    mecaDrive(0.5,7,7,5);
                     pulley.setPower(1);
                     outtake.setPosition(0.35);
                     sleep(1000);
@@ -222,8 +221,9 @@ public class ChungusSingleCrater extends LinearOpMode {
                     sleep(500);
                     outtake.setPosition(0.35);
                     sleep(500);
-                    mecaDrive(0.5,-21,21,10);
-                    mecaDriveWhilePulley(0.5,36,36,10);
+                    mecaDrive(0.5,-20,20,10);
+                    strafe(1,-4,5);
+                    mecaDriveWhilePulley(1,40,40,10);
                     armSlam(true);
                     requestOpModeStop();
                 }
@@ -471,7 +471,7 @@ public class ChungusSingleCrater extends LinearOpMode {
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         actuatorMovement(1,-51.75,10);
-        strafe(0.25,-3,5);
+        strafe(0.25,-2.5,5);
     }
 
     public void armSlam(boolean x)
@@ -488,13 +488,13 @@ public class ChungusSingleCrater extends LinearOpMode {
 
         if(seed.equals("down"))
         {
-            arm.setPosition(0.17);
+            arm.setPower(0.3);
             sleep(1500);
         }
 
         else
         {
-           arm.setPosition(0.9);
+           arm.setPower(0);
            sleep(1500);
         }
     }
@@ -567,7 +567,7 @@ public class ChungusSingleCrater extends LinearOpMode {
                     (frontLeft.isBusy()) && (frontRight.isBusy()) &&
                     (backLeft.isBusy()) && (backRight.isBusy()))
             {
-                pulley.setPower(-0.5);
+                pulley.setPower(-0.65);
                 telemetry.addData("FrontLeftPower",frontLeft.getPower());
                 telemetry.addData("FrontRightPower",frontRight.getPower());
                 telemetry.addData("BackLeftPower",backLeft.getPower());
