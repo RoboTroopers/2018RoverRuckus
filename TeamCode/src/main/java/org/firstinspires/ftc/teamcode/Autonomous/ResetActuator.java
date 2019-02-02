@@ -1,6 +1,6 @@
 /*
  *
- *     Copyright (c) FTC Team 15167 Robo Troopers (http://robotroopers.org)
+ *     Copyright (c) 2018 FTC Team 15167 Robo Troopers (http://robotroopers.org)
  *
  *     Permission is hereby granted, free of charge, to any person obtaining a copy
  *     of this software and associated documentation files (the "Software"), to deal
