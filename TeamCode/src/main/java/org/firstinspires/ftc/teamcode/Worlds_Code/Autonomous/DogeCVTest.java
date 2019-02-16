@@ -22,7 +22,7 @@
  *
  */
 
-package org.firstinspires.ftc.teamcode.TeleOp;
+package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous;
 
 
 
@@ -36,7 +36,7 @@ import com.vuforia.CameraDevice;
 
 @TeleOp(name="GoldAlign Example", group="DogeCV")
 
-public class GoldAlignSetUp extends OpMode
+public class DogeCVTest extends OpMode
 {
     // Detector object
     private GoldAlignDetector detector;

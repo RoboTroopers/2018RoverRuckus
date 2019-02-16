@@ -22,7 +22,9 @@
  *
  */
 
-package org.firstinspires.ftc.teamcode.Autonomous;
+//TODO: FU
+
+package org.firstinspires.ftc.teamcode.Old_Code;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -36,7 +38,7 @@ import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 
 
-@Autonomous(name = "Chungus Single Pressed = Depot", group = "Working")
+@Autonomous(name = "Autism Anika", group = "Working")
 
 public class ChungusSingleCrater extends LinearOpMode {
 
@@ -152,7 +154,7 @@ public class ChungusSingleCrater extends LinearOpMode {
         allMotorsToPosition();
 
         mecaDrive(0.25, 7.5, 7.5, 5);
-        strafe(0.25,-7,10);
+        strafe(0.25,-8,10);
 
         switch(POSVAR)
         {
@@ -176,10 +178,14 @@ public class ChungusSingleCrater extends LinearOpMode {
                 }
 
                 else {
-                    strafe(0.25,10,5);
+                    strafe(0.25,11.5,5);
                     intake.setPower(1);
-                    mecaDrive(0.8,20,20,5);
+                    mecaDrive(0.5,5,5,5);
+                    //mecaDrive(0.8,20,20,5);
                     intake.setPower(0);
+                    strafe(0.5,-4,5);
+                    //mecaDrive(0.5,5,5,5);
+                    armSlam(true);
                     requestOpModeStop();
                 }
 
@@ -201,11 +207,13 @@ public class ChungusSingleCrater extends LinearOpMode {
                     sleep(500);
                     outtake.setPosition(0.35);
                     sleep(500);
-                    strafe(0.25,52.5,10);
+                    strafe(0.5,24,10);
+                    /*strafeWhileDown(0.25,50,1, 50, 50);
                     mecaDrive(0.5,-10.5,10.5,5);
                     pulley.setPower(-1);
                     sleep(500);
                     armSlam(true);
+                    */
                     requestOpModeStop();
                 }
 
@@ -224,10 +232,12 @@ public class ChungusSingleCrater extends LinearOpMode {
                     sleep(500);
                     outtake.setPosition(0.35);
                     sleep(500);
-                    mecaDrive(0.25,-14.5,14.5,5);
-                    strafe(0.5,-3,5);
-                    mecaDriveWhilePulley(0.5,38,38,10);
-                    armSlam(true);
+                    mecaDrive(0.5,-15,15,10);
+                    strafe(0.5,-6,10);
+                    mecaDrive(0.5,24,24,10);
+                    //mecaDrive(0.25,-15,15,5);
+                    //strafe(0.5,-3,5);
+                    //mecaDriveWhilePulley(0.5,24,24,10);
                     requestOpModeStop();
                 }
 
@@ -236,8 +246,8 @@ public class ChungusSingleCrater extends LinearOpMode {
                     intake.setPower(1);
                     mecaDrive(0.8,12,12,5);
                     intake.setPower(0);
-                    mecaDrive(0.5,6,-6,5);
-                    mecaDrive(0.5,7,7,5);
+                    mecaDrive(0.5,6.5,-6.5,5);
+                    mecaDrive(0.5,9,9,5);
                     pulley.setPower(1);
                     outtake.setPosition(0.35);
                     sleep(1000);
@@ -245,10 +255,13 @@ public class ChungusSingleCrater extends LinearOpMode {
                     sleep(500);
                     outtake.setPosition(0.35);
                     sleep(500);
-                    mecaDrive(0.5,-20,20,10);
-                    strafe(1,-4,5);
-                    mecaDriveWhilePulley(1,40,40,10);
-                    armSlam(true);
+                    intake.setPower(1);
+                    mecaDriveWhilePulley(0.5,-24,-24,10);
+                    intake.setPower(0);
+                    //strafe(1,-4,5);
+                    //mecaDriveWhilePulley(1,-20,-20,10);
+                    //mecaDrive(0.5,-20,20,10);
+                    //armSlam(true);
                     requestOpModeStop();
                 }
 
@@ -494,8 +507,10 @@ public class ChungusSingleCrater extends LinearOpMode {
     public void unlatch()
     {
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        actuatorMovement(1,-51.75,10);
-        strafe(0.25,-2.5,5);
+        actuatorMovement(1,-53.5,  10); /**53.5 is what we used for first and second qualifier
+                                                               * Do not, no matter what reset value
+                                                               **/
+        strafe(1,-3,5);
     }
 
     public void armSlam(boolean x)
@@ -555,7 +570,7 @@ public class ChungusSingleCrater extends LinearOpMode {
                     (backLeft.isBusy()) && (backRight.isBusy()))
             {
                 motorTelemetryPower();
-                pulley.setPower(0.5);
+                pulley.setPower(-0.65);
             }
 
             allMotorsZero();
