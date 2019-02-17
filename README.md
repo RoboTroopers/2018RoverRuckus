@@ -1,2 +1,2 @@
 # 2018RoverRuckus
-Repo for Rover Ruckus FTC challenge of 2018
+Github Repo for Team 15167 Robo Troopers
