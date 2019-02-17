@@ -27,7 +27,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-
+/**
+ * CLICK FOR DA QUEEN
+ * *CLICK CLICK CLICK CLICK CLICK*
+ */
 
 @TeleOp(name = "UgandanKnuckles", group = "Working")
 public class UgandanKnuckles extends LinearOpMode {
