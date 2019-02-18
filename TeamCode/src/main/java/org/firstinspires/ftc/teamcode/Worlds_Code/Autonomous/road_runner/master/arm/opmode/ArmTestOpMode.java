@@ -27,7 +27,7 @@ import com.acmerobotics.roadrunner.util.NanoClock;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.arm.Arm;
+import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.arm.Arm;
 
 /*
  * Simple test of motion-profiled arm autonomous operation. The arm should move *smoothly*

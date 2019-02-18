@@ -39,6 +39,8 @@ public class UgandanKnuckles extends LinearOpMode {
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
+    private DcMotor pulley;
+
 
     /**
      * This function is executed when this Op Mode is selected from the Driver Station.
@@ -51,6 +53,7 @@ public class UgandanKnuckles extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft   = hardwareMap.get(DcMotor.class, "backLeft");
         backRight  = hardwareMap.get(DcMotor.class, "backRight");
+        pulley     = hardwareMap.get(DcMotor.class, "pulley");
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
@@ -62,6 +65,8 @@ public class UgandanKnuckles extends LinearOpMode {
 
         while (opModeIsActive())
         {
+
+            //Drive motor control
 
             double threshold = 0.157;
 
@@ -89,6 +94,12 @@ public class UgandanKnuckles extends LinearOpMode {
                 backRight.setPower((-gamepad1.right_stick_x));
             }
 
+            // Rest of the motors control
+
+            pulley.setPower(gamepad2.right_stick_y);
+
+
+            // Telemetry
             telemetry.addData("front left power", frontLeft.getPower());
             telemetry.addData("front right power", frontRight.getPower());
             telemetry.addData("back left power", backLeft.getPower());
