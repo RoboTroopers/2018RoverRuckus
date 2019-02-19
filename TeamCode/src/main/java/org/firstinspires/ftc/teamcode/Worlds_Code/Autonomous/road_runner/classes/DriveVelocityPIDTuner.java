@@ -21,7 +21,7 @@
  *     SOFTWARE.
  *
  */
-package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.opmode;
+package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.classes;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -37,14 +37,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.SampleMecanumDriveBase;
-import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.SampleMecanumDriveREV;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
  * This routine is designed to tune the PID coefficients used by the REV Expansion Hubs for closed-
  * loop velocity control. Although it may seem unnecessary, tuning these coefficients is just as
  * important as the positional parameters. Like the other manual tuning routines, this op mode
@@ -59,7 +55,7 @@ import java.util.List;
 @Autonomous
 public class DriveVelocityPIDTuner extends LinearOpMode {
     public static PIDCoefficients MOTOR_PID = new PIDCoefficients();
-    public static double DISTANCE = 72;
+    public static double DISTANCE = 48;
 
     /*
      * If true, the kV value is computed from the free speed determined by the manufacturer (likely
@@ -72,7 +68,7 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        SampleMecanumDriveBase drive = new SampleMecanumDriveREV(hardwareMap);
+        SampleMecanumDriveBase drive = new SampleMecanumDriveREVOptimized(hardwareMap);
 
         PIDCoefficients currentCoeffs = drive.getPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
         MOTOR_PID = pidCopy(currentCoeffs);

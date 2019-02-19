@@ -21,7 +21,7 @@
  *     SOFTWARE.
  *
  */
-package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive;
+package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.classes;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -34,6 +34,8 @@ import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 import com.acmerobotics.roadrunner.trajectory.constraints.MecanumConstraints;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.classes.DriveConstants;
 
 /*
  * Base class with shared functionality for sample mecanum drives. All hardware-specific details are

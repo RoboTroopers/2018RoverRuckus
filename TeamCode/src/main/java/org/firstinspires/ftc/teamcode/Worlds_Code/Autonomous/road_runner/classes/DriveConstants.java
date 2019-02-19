@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigu
 @Config
 public class DriveConstants {
 
-    /**
+    /*
      * TODO: Tune or adjust the following constants to fit your robot. Note that the non-final
      * fields may also be edited through the dashboard (connect to the robot's WiFi network and
      * navigate to https://192.168.49.1:8080/dash). Make sure to save the values here after you
@@ -43,7 +43,6 @@ public class DriveConstants {
 
     //private static final MotorConfigurationType MOTOR_CONFIG =
     //        MotorConfigurationType.getMotorType(NeveRest20Gearmotor.class);
-    //private static final double TICKS_PER_REV = MOTOR_CONFIG.getTicksPerRev();
     private static final double TICKS_PER_REV = 383.6;
 
     public static double WHEEL_RADIUS = 2; // in
@@ -66,6 +65,6 @@ public class DriveConstants {
     }
 
     public static double getMaxRpm() {
-        return 233;
+        return 223;
     }
 }
