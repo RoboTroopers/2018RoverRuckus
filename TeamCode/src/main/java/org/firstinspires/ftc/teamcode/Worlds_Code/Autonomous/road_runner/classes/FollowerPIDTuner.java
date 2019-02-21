@@ -21,7 +21,7 @@
  *     SOFTWARE.
  *
  */
-package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.opmode;
+package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.classes;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
@@ -31,7 +31,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.classes.SampleMecanumDriveBase;
+import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.SampleMecanumDriveBase;
 import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.SampleMecanumDriveREV;
 import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.util.DashboardUtil;
 

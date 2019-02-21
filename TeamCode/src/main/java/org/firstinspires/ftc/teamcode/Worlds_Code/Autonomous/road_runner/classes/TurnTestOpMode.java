@@ -21,7 +21,7 @@
  *     SOFTWARE.
  *
  */
-package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.opmode;
+package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.classes;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
@@ -31,23 +31,23 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.classes.SampleMecanumDriveBase;
+import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.SampleMecanumDriveBase;
 import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.SampleMecanumDriveREV;
 import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.util.DashboardUtil;
 
 /*
- * This is a simple routine to test translational drive capabilities. If this is *consistently*
- * overshooting or undershooting by a significant amount, check the constants in the drive class.
+ * This is a simple routine to test turning capabilities. If this is consistently overshooting or
+ * undershooting by a significant amount, re-run TrackWidthCalibrationOpMode.
  */
 @Autonomous
-public class StraightTestOpMode extends LinearOpMode {
+public class TurnTestOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         FtcDashboard dashboard = FtcDashboard.getInstance();
-        SampleMecanumDriveBase drive = new SampleMecanumDriveREV(hardwareMap);
+        SampleMecanumDriveBase drive = new SampleMecanumDriveREVOptimized(hardwareMap);
 
         Trajectory trajectory = drive.trajectoryBuilder()
-                .forward(60)
+                .turnTo(Math.PI / 2)
                 .build();
 
         waitForStart();
@@ -63,7 +63,7 @@ public class StraightTestOpMode extends LinearOpMode {
 
             packet.put("x", currentPose.getX());
             packet.put("y", currentPose.getY());
-            packet.put("heading", currentPose.getHeading());
+            packet.put("heading", Math.toDegrees(currentPose.getHeading()));
 
             fieldOverlay.setStrokeWidth(4);
             fieldOverlay.setStroke("green");

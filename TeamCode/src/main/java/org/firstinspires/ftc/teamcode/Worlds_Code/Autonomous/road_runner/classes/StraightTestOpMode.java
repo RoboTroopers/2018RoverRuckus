@@ -21,7 +21,7 @@
  *     SOFTWARE.
  *
  */
-package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.opmode;
+package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.classes;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
@@ -31,24 +31,23 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.classes.SampleMecanumDriveBase;
+import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.SampleMecanumDriveBase;
 import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.SampleMecanumDriveREV;
 import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.util.DashboardUtil;
 
 /*
- * This is an example of a more complex path to really test the tuning.
+ * This is a simple routine to test translational drive capabilities. If this is *consistently*
+ * overshooting or undershooting by a significant amount, check the constants in the drive class.
  */
 @Autonomous
-public class SplineTestOpMode extends LinearOpMode {
+public class StraightTestOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         FtcDashboard dashboard = FtcDashboard.getInstance();
-        SampleMecanumDriveBase drive = new SampleMecanumDriveREV(hardwareMap);
+        SampleMecanumDriveBase drive = new SampleMecanumDriveREVOptimized(hardwareMap);
 
         Trajectory trajectory = drive.trajectoryBuilder()
-                .splineTo(new Pose2d(30, 30, 0))
-                .waitFor(1)
-                .splineTo(new Pose2d(0, 0, 0))
+                .forward(60)
                 .build();
 
         waitForStart();
