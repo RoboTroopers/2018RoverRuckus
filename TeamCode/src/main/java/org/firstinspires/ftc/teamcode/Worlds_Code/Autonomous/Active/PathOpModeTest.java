@@ -21,60 +21,54 @@
  *     SOFTWARE.
  *
  */
-package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.classes;
+package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.Active;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.canvas.Canvas;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.path.LineSegment;
+import com.acmerobotics.roadrunner.path.Path;
+import com.acmerobotics.roadrunner.trajectory.PointTurn;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.OpModes.SampleMecanumDriveREVOptimized;
 import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.SampleMecanumDriveBase;
-import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.SampleMecanumDriveREV;
-import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.util.DashboardUtil;
+
+import java.util.Arrays;
 
 /*
- * This is a simple routine to test translational drive capabilities. If this is *consistently*
- * overshooting or undershooting by a significant amount, check the constants in the drive class.
+ * This is an example of a more complex path to really test the tuning.
  */
+@Disabled
 @Autonomous
-public class StraightTestOpMode extends LinearOpMode {
+public class PathOpModeTest extends LinearOpMode {
     @Override
-    public void runOpMode() throws InterruptedException {
-        FtcDashboard dashboard = FtcDashboard.getInstance();
+    public void runOpMode()  {
         SampleMecanumDriveBase drive = new SampleMecanumDriveREVOptimized(hardwareMap);
 
+        Path line = new Path(new LineSegment(
+                new Vector2d(10,10),
+                new Vector2d(20,20)
+        ));
+
+
         Trajectory trajectory = drive.trajectoryBuilder()
-                .forward(60)
+                .splineTo(new Pose2d(30, 30, 0))
+                .waitFor(1)
+                .splineTo(new Pose2d(0, 0, 0))
+                .waitFor(1)
+                .splineTo(new Pose2d(30,30,0))
                 .build();
+
 
         waitForStart();
 
         if (isStopRequested()) return;
 
         drive.followTrajectory(trajectory);
-        while (!isStopRequested() && drive.isFollowingTrajectory()) {
-            Pose2d currentPose = drive.getPoseEstimate();
 
-            TelemetryPacket packet = new TelemetryPacket();
-            Canvas fieldOverlay = packet.fieldOverlay();
-
-            packet.put("x", currentPose.getX());
-            packet.put("y", currentPose.getY());
-            packet.put("heading", currentPose.getHeading());
-
-            fieldOverlay.setStrokeWidth(4);
-            fieldOverlay.setStroke("green");
-            DashboardUtil.drawSampledTrajectory(fieldOverlay, trajectory);
-
-            fieldOverlay.setFill("blue");
-            fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
-
-            dashboard.sendTelemetryPacket(packet);
-
-            drive.update();
-        }
     }
 }

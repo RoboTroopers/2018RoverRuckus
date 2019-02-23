@@ -21,14 +21,10 @@
  *     SOFTWARE.
  *
  */
-package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.classes;
+package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.OpModes;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
-import com.qualcomm.hardware.motors.NeveRest20Gearmotor;
-import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
-
-import org.firstinspires.ftc.teamcode.R;
 
 /*
  * Constants shared between multiple drive types.

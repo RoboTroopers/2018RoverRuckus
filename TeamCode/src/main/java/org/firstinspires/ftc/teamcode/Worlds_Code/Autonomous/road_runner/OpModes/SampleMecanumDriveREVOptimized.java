@@ -21,7 +21,7 @@
  *     SOFTWARE.
  *
  */
-package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.classes;
+package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.OpModes;
 
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -93,7 +93,7 @@ public class SampleMecanumDriveREVOptimized extends SampleMecanumDriveBase {
 
         // TODO: set the tuned coefficients from DriveVelocityPIDTuner if using RUN_USING_ENCODER
         // setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, ...);
-        setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDCoefficients(35.5,0.49674875,9.695));
+        setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDCoefficients(35.5,0.49674875,10));
     }
 
     @Override

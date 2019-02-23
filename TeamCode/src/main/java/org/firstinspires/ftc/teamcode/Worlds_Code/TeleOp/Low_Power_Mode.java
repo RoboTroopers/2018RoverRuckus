@@ -32,8 +32,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * *CLICK CLICK CLICK CLICK CLICK*
  */
 
-@TeleOp(name = "Ugandan Knuckles")
-public class UgandanKnuckles extends LinearOpMode {
+@TeleOp(name = "Low Power Ugandan Knuckles")
+public class Low_Power_Mode extends LinearOpMode {
 
     private DcMotor frontLeft;
     private DcMotor frontRight;
@@ -60,6 +60,8 @@ public class UgandanKnuckles extends LinearOpMode {
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
 
+
+
         waitForStart();
 
         if (opModeIsActive()) {
@@ -70,7 +72,7 @@ public class UgandanKnuckles extends LinearOpMode {
 
             //Drive motor control
 
-            double threshold = 0.157;
+            double threshold = 0.5;
 
             if(Math.abs(gamepad1.left_stick_y) > threshold || Math.abs(gamepad1.left_stick_x) > threshold)
             {
@@ -98,7 +100,15 @@ public class UgandanKnuckles extends LinearOpMode {
 
             // Rest of the motors control
 
-            pulley.setPower(gamepad2.right_stick_y);
+            if(Math.abs(gamepad2.right_stick_y) > threshold)
+            {
+                pulley.setPower(gamepad2.right_stick_y);
+            }
+
+            else
+            {
+                pulley.setPower(0);
+            }
 
             outtakePulley.setPower(gamepad2.left_stick_y);
 
