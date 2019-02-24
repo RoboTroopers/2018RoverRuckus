@@ -23,37 +23,47 @@
  */
 package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.Active;
 
+
+
+import com.acmerobotics.roadrunner.path.heading.HeadingInterpolator;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+
+import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.OpModes.SampleMecanumDriveREVOptimized;
+import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.SampleMecanumDriveBase;
 import com.acmerobotics.dashboard.canvas.Spline;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.path.LineSegment;
 import com.acmerobotics.roadrunner.path.Path;
 import com.acmerobotics.roadrunner.path.QuinticSplineSegment;
+import com.acmerobotics.roadrunner.path.heading.ConstantInterpolator;
 import com.acmerobotics.roadrunner.path.heading.SplineInterpolator;
 import com.acmerobotics.roadrunner.trajectory.PathTrajectorySegment;
 import com.acmerobotics.roadrunner.trajectory.PointTurn;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
+import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryConstraints;
+import java.util.Arrays;
+
+
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+
 import com.qualcomm.robotcore.hardware.DcMotor;
-
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.OpModes.SampleMecanumDriveREVOptimized;
-import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.road_runner.master.drive.SampleMecanumDriveBase;
-
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 
 /*
  * This is an example of a more complex path to really test the tuning.
@@ -97,14 +107,28 @@ public class PathOpModeTest extends LinearOpMode {
 
         // Roadrunner set up
 
-        Path unlatch = new Path(new LineSegment(
-                new Vector2d(11,11),
-                new Vector2d(8,15)
-        ));
+        Trajectory checkLeftSample = drive.trajectoryBuilder()
+                .forward(2)
+                .splineTo(new Pose2d(10,45,90))
+                .build();
 
-        Trajectory depot = drive.trajectoryBuilder()
-                .splineTo(new Pose2d(14,40))
-                .splineTo(new Pose2d(-20,62), new SplineInterpolator(0,-6))
+        Trajectory toDepot = drive.trajectoryBuilder()
+                .splineTo(new Pose2d(-35,60, 180))
+                .build();
+
+        Trajectory toLeftSample = drive.trajectoryBuilder()
+                .splineTo(new Pose2d(20,38,0))
+                .turnTo(45)
+                .build();
+
+        Trajectory toMiddleSample = drive.trajectoryBuilder()
+                .splineTo(new Pose2d(26,24,-45))
+                .turnTo(45)
+                .build();
+
+        Trajectory toRightSample = drive.trajectoryBuilder()
+                .splineTo(new Pose2d(36,14,-45))
+                .turnTo(45)
                 .build();
 
 
@@ -139,7 +163,17 @@ public class PathOpModeTest extends LinearOpMode {
 
         unlatch();
 
-        
+        if(detector.getAligned())
+        {
+            GoldPosition = "l";
+        }
+
+        else {
+            GoldPosition = "r";
+        }
+
+
+
     }
 
     private String GoldPosition;
