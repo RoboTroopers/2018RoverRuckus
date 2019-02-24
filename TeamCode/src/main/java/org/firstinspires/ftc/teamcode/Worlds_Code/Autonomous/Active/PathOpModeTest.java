@@ -30,6 +30,7 @@ import com.acmerobotics.roadrunner.path.LineSegment;
 import com.acmerobotics.roadrunner.path.Path;
 import com.acmerobotics.roadrunner.path.QuinticSplineSegment;
 import com.acmerobotics.roadrunner.path.heading.SplineInterpolator;
+import com.acmerobotics.roadrunner.trajectory.PathTrajectorySegment;
 import com.acmerobotics.roadrunner.trajectory.PointTurn;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
@@ -96,10 +97,17 @@ public class PathOpModeTest extends LinearOpMode {
 
         // Roadrunner set up
 
+        Path unlatch = new Path(new LineSegment(
+                new Vector2d(11,11),
+                new Vector2d(8,15)
+        ));
+
         Trajectory depot = drive.trajectoryBuilder()
                 .splineTo(new Pose2d(14,40))
                 .splineTo(new Pose2d(-20,62), new SplineInterpolator(0,-6))
                 .build();
+
+
 
 
         // Set up detector
@@ -129,10 +137,12 @@ public class PathOpModeTest extends LinearOpMode {
 
         // Type code that runs during the OpMode here
 
+        unlatch();
 
+        
     }
 
-    String GoldPosition;
+    private String GoldPosition;
 
     private void unlatch() {
 
@@ -147,6 +157,7 @@ public class PathOpModeTest extends LinearOpMode {
         }
 
         actuator.setPower(0);
+
     }
 
     private void dropOffMarker()
