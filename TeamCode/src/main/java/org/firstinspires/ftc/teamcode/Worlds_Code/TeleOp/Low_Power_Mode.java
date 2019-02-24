@@ -72,7 +72,7 @@ public class Low_Power_Mode extends LinearOpMode {
 
             //Drive motor control
 
-            double threshold = 0.5;
+            double threshold = 0.7;
 
             if(Math.abs(gamepad1.left_stick_y) > threshold || Math.abs(gamepad1.left_stick_x) > threshold)
             {
