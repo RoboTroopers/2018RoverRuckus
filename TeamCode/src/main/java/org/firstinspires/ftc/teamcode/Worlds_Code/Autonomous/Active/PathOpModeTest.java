@@ -23,9 +23,6 @@
  */
 package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.Active;
 
-
-
-import com.acmerobotics.roadrunner.path.heading.HeadingInterpolator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -47,6 +44,8 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryConstraints;
+import com.acmerobotics.roadrunner.path.heading.HeadingInterpolator;
+
 import java.util.Arrays;
 
 
@@ -65,40 +64,47 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.jetbrains.annotations.NotNull;
 
 
-/*
- * This is an example of a more complex path to really test the tuning.
- */
 @Disabled
 @Autonomous
 public class PathOpModeTest extends LinearOpMode {
 
     // Declare drive and motors
 
-    SampleMecanumDriveBase drive = new SampleMecanumDriveREVOptimized(hardwareMap);
+    private SampleMecanumDriveBase drive = new SampleMecanumDriveREVOptimized(hardwareMap);
 
-    private DcMotor actuator;
-    private DcMotor pulley;
-    private DcMotor outtakePulley;
-    private CRServo intake;
-    private Servo   outtake;
-    private Servo   intakeRotate;
-    private GoldAlignDetector detector;
-    private DistanceSensor distanceSensor;
+    private static DcMotor actuator;
+    private static DcMotor pulley;
+    private static DcMotor outtakePulley;
+    private static CRServo intake;
+    private static Servo   outtake;
+    private static Servo   intakeRotate;
+    private static GoldAlignDetector detector;
+    private static DistanceSensor distanceSensor;
 
     // Declare variables
 
-    final double intakePosition     = 0;
-    final double retractPosition    = 0.5;
-    final double transitionPosition = 1;
+    private static String GoldPosition;
+
+    private static final double intakePosition          = 0;
+    private static final double retractPosition         = 0.5;
+    private static final double transitionPosition      = 1;
+    private static final double outtakeReadyPosition    = 0;
+    private static final double outtakeMovementPosition = 0.15;
+    private static final double outtakeDump             = 0.8;
 
 
 
     public void runOpMode()  {
 
         // Mapping the motors and drive class
-        actuator = hardwareMap.get(DcMotor.class, "actuator");
-        pulley = hardwareMap.get(DcMotor.class, "pulley");
-        outtakePulley = hardwareMap.get(DcMotor.class, "outtakePulley");
+        actuator       = hardwareMap.get(DcMotor.class, "actuator");
+        pulley         = hardwareMap.get(DcMotor.class, "pulley");
+        outtakePulley  = hardwareMap.get(DcMotor.class, "outtakePulley");
+        intake         = hardwareMap.get(CRServo.class, "intake");
+        outtake        = hardwareMap.get(Servo.class, "outtake");
+        intakeRotate   = hardwareMap.get(Servo.class, "intakeRotate");
+        distanceSensor = hardwareMap.get(DistanceSensor.class, "distanceSensor");
+
 
         // Make the paths, trajectories, splines, set up DogeCV, etc.
 
@@ -133,7 +139,6 @@ public class PathOpModeTest extends LinearOpMode {
 
 
 
-
         // Set up detector
         detector = new GoldAlignDetector(); // Create detector
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
@@ -163,6 +168,8 @@ public class PathOpModeTest extends LinearOpMode {
 
         unlatch();
 
+        drive.followTrajectory(checkLeftSample);
+
         if(detector.getAligned())
         {
             GoldPosition = "l";
@@ -172,11 +179,31 @@ public class PathOpModeTest extends LinearOpMode {
             GoldPosition = "r";
         }
 
+        drive.followTrajectory(toDepot);
 
+
+
+        switch(GoldPosition)
+        {
+            case "l":
+                drive.followTrajectory(toLeftSample);
+
+                break;
+
+            case "r":
+                drive.followTrajectory(toRightSample);
+
+                break;
+
+            default:
+                drive.followTrajectory(toMiddleSample);
+
+                break;
+
+
+        }
 
     }
-
-    private String GoldPosition;
 
     private void unlatch() {
 
@@ -194,11 +221,43 @@ public class PathOpModeTest extends LinearOpMode {
 
     }
 
+    private void cycle(double extensionTime)
+    {
+        intakeP();
+        outtake.setPosition(outtakeReadyPosition);
+        sleep(200);
+        intake.setPower(1);
+        pulley.setPower(1);
+        sleep(Math.round(extensionTime));
+        pulley.setPower(0);
+
+        transition();
+
+        retract();
+
+        intake.setPower(-1);
+        sleep(250);
+        outtake.setPosition(outtakeMovementPosition);
+
+        upAndDump();
+    }
+
+    private void upAndDump()
+    {
+        outtakePulley.setPower(1);
+        sleep(500);
+        outtake.setPosition(outtakeDump);
+        sleep(250);
+    }
+
     private void dropOffMarker()
     {
         extendPulleyFull();
 
-        markerThrow();
+        intakeP();
+        intake.setPower(-1);
+        sleep(200);
+        intake.setPower(0);
 
         retract();
     }
@@ -227,13 +286,5 @@ public class PathOpModeTest extends LinearOpMode {
         pulley.setPower(1);
         sleep(650);
         pulley.setPower(0);
-    }
-
-    private void markerThrow()
-    {
-        intakeP();
-        intake.setPower(-1);
-        sleep(200);
-        intake.setPower(0);
     }
 }
