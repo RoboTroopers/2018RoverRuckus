@@ -83,6 +83,7 @@ public class PathOpModeTest extends LinearOpMode {
 
     // Declare variables
 
+    private static String conditionOfRobot;
     private static String GoldPosition;
 
     private static final double intakePosition          = 0;
@@ -139,7 +140,8 @@ public class PathOpModeTest extends LinearOpMode {
 
 
 
-        // Set up detector
+        // Set up Gold mineral detector
+
         detector = new GoldAlignDetector(); // Create detector
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
         detector.useDefaults(); // Set detector to use default settings
@@ -240,6 +242,47 @@ public class PathOpModeTest extends LinearOpMode {
         outtake.setPosition(outtakeMovementPosition);
 
         upAndDump();
+
+    }
+
+    private void checkIfReady()throws IllegalArgumentException
+    {
+        switch (conditionOfRobot)
+        {
+            case "ready":
+                throw new IllegalArgumentException();
+
+            case "outtakeExtended":
+                retractOuttake();
+
+                break;
+
+            case "intakeExtended":
+                retract();
+
+                break;
+
+                default:
+
+                    if(outtake.getPosition() == outtakeReadyPosition &&
+                    intakeRotate.getPosition() == transitionPosition)
+                    {
+                        conditionOfRobot = "ready";
+                        throw new IllegalArgumentException();
+                    }
+
+                    else {
+                        retract();
+
+                    }
+        }
+    }
+
+    private void retractOuttake()
+    {
+        outtakePulley.setPower(-1);
+        outtake.setPosition(outtakeReadyPosition);
+        sleep(550);
     }
 
     private void upAndDump()
@@ -273,12 +316,20 @@ public class PathOpModeTest extends LinearOpMode {
         pulley.setPower(-1);
         intakeRotate.setPosition(retractPosition);
         sleep(650);
+
+        if(outtake.getPosition() == outtakeReadyPosition)
+        {
+            conditionOfRobot = "ready";
+        }
+
     }
 
     private void transition()
     {
+        intake.setPower(-1);
         intakeRotate.setPosition(transitionPosition);
         sleep(200);
+        intakeP();
     }
 
     private void extendPulleyFull()
