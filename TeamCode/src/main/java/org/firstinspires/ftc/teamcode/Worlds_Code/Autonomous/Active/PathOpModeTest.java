@@ -64,6 +64,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.jetbrains.annotations.NotNull;
 
 
+// TODO: FIX robotCondition FOR ALL METHODS AND FULLY AUTOMATE TELE+AUTO WITH METHODS
+
 @Disabled
 @Autonomous
 public class PathOpModeTest extends LinearOpMode {
@@ -183,7 +185,7 @@ public class PathOpModeTest extends LinearOpMode {
 
         drive.followTrajectory(toDepot);
 
-
+        dropOffMarker();
 
         switch(GoldPosition)
         {
@@ -202,10 +204,10 @@ public class PathOpModeTest extends LinearOpMode {
 
                 break;
 
-
         }
-
     }
+
+    // Make all the methods that are used in the program
 
     private void unlatch() {
 
@@ -283,6 +285,15 @@ public class PathOpModeTest extends LinearOpMode {
         outtakePulley.setPower(-1);
         outtake.setPosition(outtakeReadyPosition);
         sleep(550);
+
+        if(intakeRotate.getPosition() == intakePosition)
+        {
+            conditionOfRobot = "ready";
+        }
+
+        else {
+            retract();
+        }
     }
 
     private void upAndDump()
@@ -303,6 +314,8 @@ public class PathOpModeTest extends LinearOpMode {
         intake.setPower(0);
 
         retract();
+
+        conditionOfRobot = "ready";
     }
 
     private void intakeP()
@@ -337,5 +350,7 @@ public class PathOpModeTest extends LinearOpMode {
         pulley.setPower(1);
         sleep(650);
         pulley.setPower(0);
+
+        conditionOfRobot = "intakeExtended";
     }
 }
