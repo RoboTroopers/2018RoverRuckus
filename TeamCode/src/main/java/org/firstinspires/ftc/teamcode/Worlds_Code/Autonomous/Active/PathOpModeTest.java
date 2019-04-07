@@ -113,6 +113,10 @@ public class PathOpModeTest extends LinearOpMode {
 
         String GoldPosition; // Used to check where the gold position is
 
+        actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        pulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        outtakePulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
         // Roadrunner set up
 
@@ -211,13 +215,19 @@ public class PathOpModeTest extends LinearOpMode {
 
     private void unlatch() {
 
-        while(distanceSensor.getDistance(DistanceUnit.CM) > 2)
+        actuator.setTargetPosition(-2767);
+
+        while(distanceSensor.getDistance(DistanceUnit.CM) > 2 && actuator.getCurrentPosition() > -2767)
         {
             actuator.setPower(1);
 
-            if(detector.getAligned())
+            while(actuator.isBusy())
             {
-                GoldPosition = "m";
+                telemetry.addData("unlatching", "");
+
+                if(detector.getAligned()){
+                    GoldPosition = "m";
+                }
             }
         }
 
