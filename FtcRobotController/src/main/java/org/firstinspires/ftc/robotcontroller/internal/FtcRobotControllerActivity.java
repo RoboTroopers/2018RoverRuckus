@@ -341,7 +341,7 @@ public class FtcRobotControllerActivity extends Activity
       initWifiMute(true);
     }
 
-      FtcDashboard.start(); //Start FTCDashboard
+      FtcDashboard.start(); // Start FTCDashboard
   }
 
   protected UpdateUI createUpdateUI() {
@@ -625,7 +625,6 @@ public class FtcRobotControllerActivity extends Activity
     });
 
     FtcDashboard.attachWebServer(service.getWebServer());
-
   }
 
   private void updateUIAndRequestRobotSetup() {
