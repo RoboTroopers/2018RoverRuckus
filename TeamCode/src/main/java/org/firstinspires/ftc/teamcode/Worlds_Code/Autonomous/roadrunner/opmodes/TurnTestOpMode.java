@@ -48,7 +48,7 @@ public class TurnTestOpMode extends LinearOpMode {
         SampleMecanumDriveBase drive = new SampleMecanumDriveREVOptimized(hardwareMap);
 
         Trajectory trajectory = drive.trajectoryBuilder()
-                .turnTo(Math.PI / 2)
+                .turnTo(Math.PI )
                 .build();
 
         waitForStart();
@@ -64,7 +64,7 @@ public class TurnTestOpMode extends LinearOpMode {
 
             packet.put("x", currentPose.getX());
             packet.put("y", currentPose.getY());
-            packet.put("heading", currentPose.getHeading());
+            packet.put("heading", currentPose.getHeading() * (180/Math.PI));
 
             fieldOverlay.setStrokeWidth(4);
             fieldOverlay.setStroke("green");
