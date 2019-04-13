@@ -24,11 +24,11 @@ public class DriveConstants {
     private static final MotorConfigurationType MOTOR_CONFIG =
             MotorConfigurationType.getMotorType(Matrix12vMotor.class);
 
-    private static final double TICKS_PER_REV = 753.2;
+    private static final double TICKS_PER_REV = 753.2; // Should be 753.2
 
     public static double WHEEL_RADIUS = 2; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 0; // in 13.09
+    public static double TRACK_WIDTH = 1; // in 13.09
 
     public static DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(30.0, 30.0, Math.PI / 2, Math.PI / 2);
 
