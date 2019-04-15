@@ -21,41 +21,80 @@
  *     SOFTWARE.
  *
  */
-package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.roadrunner.opmodes;
+package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.Active;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.path.LineSegment;
+import com.acmerobotics.roadrunner.path.QuinticSplineSegment;
+import com.acmerobotics.roadrunner.path.heading.SplineInterpolator;
+import com.acmerobotics.roadrunner.path.heading.WiggleInterpolator;
+import com.acmerobotics.roadrunner.trajectory.PathTrajectorySegment;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.roadrunner.path.Path;
+
+import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.roadrunner.drive.SampleMecanumDriveBase;
 import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.roadrunner.drive.SampleMecanumDriveREVOptimized;
+import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.roadrunner.drive.SampleMecanumDriveBase;
 import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.roadrunner.drive.SampleMecanumDriveREV;
+import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.roadrunner.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.roadrunner.util.DashboardUtil;
 
+import java.util.Arrays;
+
 /*
- * This is a simple routine to test turning capabilities. If this is consistently overshooting or
- * undershooting by a significant amount, re-run TrackWidthCalibrationOpMode.
+ * This is an example of a more complex path to really test the tuning.
  */
 @Autonomous
-public class TurnTestOpMode extends LinearOpMode {
+public class Roadrunner_Tests extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         SampleMecanumDriveBase drive = new SampleMecanumDriveREVOptimized(hardwareMap);
 
         Trajectory trajectory = drive.trajectoryBuilder()
-                .turnTo(Math.PI /2)
+                .splineTo(new Pose2d(30, 30, 0))
+                .waitFor(1)
+                .reverse()
+                .splineTo(new Pose2d(0, 0, 0))
+                .turn(Math.toRadians(180))
                 .build();
+
+        Path line = new Path(new LineSegment(
+                new Vector2d(12,12),
+                new Vector2d(12,12)
+        ));
+
+
+        Path spline = new Path(new QuinticSplineSegment(
+                new QuinticSplineSegment.Waypoint(12, 12, 0, 0), // start position and derivatives
+                new QuinticSplineSegment.Waypoint(10, 48, 0, 0) // end position and derivatives
+        ), new SplineInterpolator(Math.toRadians(0),Math.toRadians(0)));
+
+        Trajectory startingPos = new Trajectory(Arrays.asList(
+                new PathTrajectorySegment(line, DriveConstants.BASE_CONSTRAINTS)
+        ));
+
+        Trajectory toWall = new Trajectory(Arrays.asList(
+                new PathTrajectorySegment(spline, DriveConstants.BASE_CONSTRAINTS)
+        ));
+
+
 
         waitForStart();
 
         if (isStopRequested()) return;
 
-        drive.followTrajectory(trajectory);
+        drive.followTrajectory(startingPos);
+        drive.followTrajectory(toWall);
+
         while (!isStopRequested() && drive.isFollowingTrajectory()) {
             Pose2d currentPose = drive.getPoseEstimate();
 

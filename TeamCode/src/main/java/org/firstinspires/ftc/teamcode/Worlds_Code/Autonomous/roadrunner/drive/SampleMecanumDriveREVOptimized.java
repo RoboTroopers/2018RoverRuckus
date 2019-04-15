@@ -67,7 +67,7 @@ public class SampleMecanumDriveREVOptimized extends org.firstinspires.ftc.teamco
         rightRear.setDirection(DcMotor.Direction.REVERSE);
 
         // TODO: set the tuned coefficients from DriveVelocityPIDTuner if using RUN_USING_ENCODER
-         setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDCoefficients(15,2.585,10.33));
+         setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDCoefficients(15,4.25,10.5));
     }
 
     @Override

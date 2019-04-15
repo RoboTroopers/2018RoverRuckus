@@ -119,8 +119,9 @@ public class UgandanKnuckles extends LinearOpMode {
             // Rest of the motors control
 
             pulley.setPower(-gamepad2.left_stick_y);
+            outtakePulley.setPower(gamepad2.right_stick_y);
 
-            if(gamepad2.dpad_up)
+            /*if(gamepad2.dpad_up)
             {
                 actuator.setTargetPosition(-7000);
                 actuator.setPower(1);
@@ -147,23 +148,21 @@ public class UgandanKnuckles extends LinearOpMode {
                 }
 
                 actuator.setPower(0);
-            }
+            }*/
 
-
-            /*if(gamepad1.dpad_up)
-            {
-                actuator.setPower(1);
-            }
-
-            else if(gamepad1.dpad_down)
+            if(gamepad2.dpad_down)
             {
                 actuator.setPower(-1);
             }
 
+            else if(gamepad2.dpad_up)
+            {
+                actuator.setPower(1);
+            }
+
             else {
                 actuator.setPower(0);
-            }*/
-
+            }
 
             // Servo control
 
@@ -178,15 +177,12 @@ public class UgandanKnuckles extends LinearOpMode {
             }
 
 
-
-            outtakePulley.setPower(gamepad2.right_stick_y);
-
             if(gamepad2.left_trigger == 1)
             {
                 intake.setPower(1);
             }
 
-            else if(gamepad2.right_trigger == 1)
+            else if(gamepad2.right_trigger ==  1)
             {
                 intake.setPower(-1);
             }
@@ -194,7 +190,6 @@ public class UgandanKnuckles extends LinearOpMode {
             else {
                 intake.setPower(0);
             }
-
 
 
             if(gamepad2.right_bumper)
@@ -212,32 +207,6 @@ public class UgandanKnuckles extends LinearOpMode {
             }
 
 
-
-            /*if(gamepad2.left_bumper)
-            {
-                outtakePulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                outtakePulley.setTargetPosition(-1304);
-                outtakePulley.setPower(1);
-
-                while(outtakePulley.isBusy())
-                {
-                    telemetry.addData("outtake pulley pos",outtakePulley.getCurrentPosition());
-                    telemetry.update();
-                }
-
-                outtakePulley.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-                outtakePulley.setPower(0.33);
-
-                outtake.setPosition(0.4);
-                sleep(500);
-                outtake.setPosition(0);
-                sleep(200);
-
-                outtakePulley.setPower(0);
-            }*/
-
-
             // Telemetry
             telemetry.addData("front left power", frontLeft.getPower());
             telemetry.addData("front right power", frontRight.getPower());
@@ -253,6 +222,7 @@ public class UgandanKnuckles extends LinearOpMode {
             telemetry.addData("outtake pos", outtake.getPosition());
 
             telemetry.addData("intake power", intake.getPower());
+            telemetry.addData("intake pos", intakeRotate.getPosition());
             telemetry.update();
         }
     }
