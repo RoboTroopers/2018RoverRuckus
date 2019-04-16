@@ -6,6 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.roadrunner.util.AxesSigns;
+import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.roadrunner.util.BNO055IMUUtil;
 import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.roadrunner.util.LynxOptimizedI2cFactory;
 import org.jetbrains.annotations.NotNull;
 import org.openftc.revextensions2.ExpansionHubEx;
@@ -45,6 +48,7 @@ public class SampleMecanumDriveREVOptimized extends org.firstinspires.ftc.teamco
         // TODO: if your hub is mounted vertically, remap the IMU axes so that the z-axis points
         // upward (normal to the floor) using a command like the following:
         // BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
+        BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.PNP);
 
         leftFront = hardwareMap.get(ExpansionHubMotor.class, "leftFront");
         leftRear = hardwareMap.get(ExpansionHubMotor.class, "leftRear");
@@ -67,7 +71,7 @@ public class SampleMecanumDriveREVOptimized extends org.firstinspires.ftc.teamco
         rightRear.setDirection(DcMotor.Direction.REVERSE);
 
         // TODO: set the tuned coefficients from DriveVelocityPIDTuner if using RUN_USING_ENCODER
-         setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDCoefficients(15,4.25,10.5));
+         setPIDCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDCoefficients(15,5,13));
     }
 
     @Override

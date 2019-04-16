@@ -64,29 +64,8 @@ public class SplineTestOpMode extends LinearOpMode {
                 .waitFor(1)
                 .reverse()
                 .splineTo(new Pose2d(0, 0, 0))
-                .turn(Math.toRadians(180))
+                .turn(Math.PI/2)
                 .build();
-
-        Path line = new Path(new LineSegment(
-                new Vector2d(12,12),
-                new Vector2d(12,12)
-        ));
-
-
-        Path spline = new Path(new QuinticSplineSegment(
-                new QuinticSplineSegment.Waypoint(12, 12, 0, 0), // start position and derivatives
-                new QuinticSplineSegment.Waypoint(10, 48, 0, 0) // end position and derivatives
-        ), new SplineInterpolator(Math.toRadians(0),Math.toRadians(0)));
-
-        Trajectory startingPos = new Trajectory(Arrays.asList(
-                new PathTrajectorySegment(line, DriveConstants.BASE_CONSTRAINTS)
-        ));
-
-        Trajectory toWall = new Trajectory(Arrays.asList(
-                new PathTrajectorySegment(line, DriveConstants.BASE_CONSTRAINTS)
-        ));
-
-
 
 
         waitForStart();
