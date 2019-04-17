@@ -47,6 +47,7 @@ public class UgandanKnuckles extends LinearOpMode {
     private DcMotor outtakePulley;
     private Servo   outtake;
     private Servo   intakeRotate;
+    private Servo   jammer;
     private CRServo intake;
 
     /**
@@ -61,13 +62,14 @@ public class UgandanKnuckles extends LinearOpMode {
         leftRear      = hardwareMap.get(DcMotor.class, "backLeft");
         rightRear     = hardwareMap.get(DcMotor.class, "backRight");
 
+        pulley        = hardwareMap.get(DcMotor.class, "pulley");
         outtakePulley = hardwareMap.get(DcMotor.class, "outtakePulley");
-        outtake       = hardwareMap.get(Servo.class, "outtake");
         actuator      = hardwareMap.get(DcMotor.class, "actuator");
 
         intake        = hardwareMap.get(CRServo.class, "intake");
-        pulley        = hardwareMap.get(DcMotor.class, "pulley");
+        jammer        = hardwareMap.get(Servo.class, "pepeJAM");
         intakeRotate  = hardwareMap.get(Servo.class, "intakeRotate");
+        outtake       = hardwareMap.get(Servo.class, "outtake");
 
 
         rightFront.setDirection(DcMotor.Direction.REVERSE);
@@ -166,7 +168,20 @@ public class UgandanKnuckles extends LinearOpMode {
 
 
 
+
             // Servo control
+
+            if(gamepad2.dpad_left)
+            {
+                jammer.setPosition(0.2);
+                sleep(500);
+            }
+
+            else if(gamepad2.dpad_right)
+            {
+                jammer.setPosition(0);
+                sleep(500);
+            }
 
             if(gamepad2.b)
             {

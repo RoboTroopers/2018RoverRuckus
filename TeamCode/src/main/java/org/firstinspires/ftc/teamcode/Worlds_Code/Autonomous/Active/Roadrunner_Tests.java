@@ -22,7 +22,7 @@
  *
  */
 package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.Active;
-
+//lol i am kenzie XD
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -85,6 +85,7 @@ public class Roadrunner_Tests extends LinearOpMode {
     private DcMotor outtakePulley;
     private Servo   outtake;
     private Servo   intakeRotate;
+    private Servo   jammer;
     private CRServo intake;
     private GoldAlignDetector detector;
 
@@ -108,6 +109,7 @@ public class Roadrunner_Tests extends LinearOpMode {
         intake        = hardwareMap.get(CRServo.class, "intake");
         pulley        = hardwareMap.get(DcMotor.class, "pulley");
         intakeRotate  = hardwareMap.get(Servo.class, "intakeRotate");
+        jammer        = hardwareMap.get(Servo.class, "jammer");
 
         actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -119,7 +121,7 @@ public class Roadrunner_Tests extends LinearOpMode {
 
         // Optional tuning
         detector.alignSize = 500; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
-        detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
+        detector.alignPosOffset = 300; // How far from center frame to offset this alignment zone.
         detector.downscale = 0.4; // How much to downscale the input frames
 
         detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
@@ -142,21 +144,58 @@ public class Roadrunner_Tests extends LinearOpMode {
         // Declare trajectories
 
         Trajectory exitLZ = new TrajectoryBuilder(new Pose2d(-12, -12, oof(315)), DriveConstants.BASE_CONSTRAINTS)
-                .lineTo(new Vector2d(-8,-17))
-                .strafeRight(20)
-                .splineTo(new Pose2d(-10,-50, oof(270)))
+                //.lineTo(new Vector2d(-8,-17))
+                .forward(3)
+                .strafeRight(26)
+                .splineTo(new Pose2d(-10,-45, oof(270)))
+                .strafeRight(5)
                 .turnTo(oof(270))
                 .build();
 
-        Trajectory depot = new TrajectoryBuilder(new Pose2d(-10,-50, oof(270)), DriveConstants.BASE_CONSTRAINTS)
-                .turnTo(oof(347))
-                .strafeRight(20)
+
+
+        Trajectory depot = new TrajectoryBuilder(new Pose2d(-10,-50, oof(275)), DriveConstants.BASE_CONSTRAINTS)
+                .turnTo(oof(345.5))
+                .strafeRight(18)
                 .forward(10)
+                .strafeLeft(4)
+                .waitFor(0.5)
+                .build();
+//JOHN WAS HERE
+        Trajectory toLeft = new TrajectoryBuilder(new Pose2d(0,-64,0), DriveConstants.BASE_CONSTRAINTS)
+                .reverse()
+                .splineTo(new Pose2d(-24,-50))
+                .turnTo(oof(170))
+                .reverse()
+                .strafeLeft(2)
+                .forward(18)
+                .build();
+
+        Trajectory toMiddle = new TrajectoryBuilder(new Pose2d(0,-64,0), DriveConstants.BASE_CONSTRAINTS)
+                .back(12)
+                .turn(130)
+                .back(36)
+                .turn(-70)
+                .forward(20)
+                .build();
+
+
+
+        Trajectory toRight = new TrajectoryBuilder(new Pose2d(0,-64,0), DriveConstants.BASE_CONSTRAINTS)
+                .reverse()
+                .splineTo(new Pose2d(-24,-24))
+                .lineTo(new Vector2d(-38,-10))
+                .turnTo(oof(225))
                 .build();
 
         waitForStart();
 
-        if (isStopRequested()) return;
+        //if (isStopRequested()) return;
+
+        if(detector.getAligned())
+        {
+            GoldPosition = "M";
+        }
 
 
         drive.followTrajectory(exitLZ);
@@ -186,6 +225,15 @@ public class Roadrunner_Tests extends LinearOpMode {
 
 
 
+        if(detector.getAligned() && !GoldPosition.equals("M"))
+        {
+            GoldPosition = "L";
+        }
+
+        else if (!GoldPosition.equals("M")){
+            GoldPosition = "R";
+        }
+
         drive.followTrajectory(depot);
 
         while (!isStopRequested() && drive.isFollowingTrajectory()) {
@@ -213,7 +261,10 @@ public class Roadrunner_Tests extends LinearOpMode {
         pulley.setPower(1);
         intakeRotate.setPosition(dumpPos);
         intake.setPower(1);
-        sleep(2000);
+        sleep(1500);
+
+        pulley.setPower(0.25);
+        sleep(1500);
 
         pulley.setPower(-1);
         intake.setPower(0);
@@ -221,20 +272,118 @@ public class Roadrunner_Tests extends LinearOpMode {
         sleep(750);
 
 
-    }
 
-    public void unhang()
-    {
-        actuator.setTargetPosition(-7000);
-        actuator.setPower(1);
 
-        while(actuator.isBusy())
+        switch (GoldPosition)
         {
-            telemetry.addData("actuator is going up","");
-            telemetry.update();
+            case "L":
+
+                drive.followTrajectory(toLeft);
+
+                while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                    Pose2d currentPose = drive.getPoseEstimate();
+
+                    TelemetryPacket packet = new TelemetryPacket();
+                    Canvas fieldOverlay = packet.fieldOverlay();
+
+                    packet.put("x", currentPose.getX());
+                    packet.put("y", currentPose.getY());
+                    packet.put("heading", currentPose.getHeading() * (180/ PI));
+
+                    fieldOverlay.setStrokeWidth(4);
+                    fieldOverlay.setStroke("green");
+                    DashboardUtil.drawSampledTrajectory(fieldOverlay, toLeft);
+
+                    fieldOverlay.setFill("blue");
+                    fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+
+                    dashboard.sendTelemetryPacket(packet);
+
+                    drive.update();
+                }
+
+                pulley.setPower(1);
+                sleep(2000);
+                pulley.setPower(0);
+                intakeRotate.setPosition(dumpPos);
+                sleep(200);
+
+
+                break;
+
+            default:
+
+                drive.followTrajectory(toMiddle);
+
+                while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                    Pose2d currentPose = drive.getPoseEstimate();
+
+                    TelemetryPacket packet = new TelemetryPacket();
+                    Canvas fieldOverlay = packet.fieldOverlay();
+
+                    packet.put("x", currentPose.getX());
+                    packet.put("y", currentPose.getY());
+                    packet.put("heading", currentPose.getHeading() * (180/ PI));
+
+                    fieldOverlay.setStrokeWidth(4);
+                    fieldOverlay.setStroke("green");
+                    DashboardUtil.drawSampledTrajectory(fieldOverlay, toMiddle);
+
+                    fieldOverlay.setFill("blue");
+                    fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+
+                    dashboard.sendTelemetryPacket(packet);
+
+                    drive.update();
+                }
+
+                pulley.setPower(1);
+                sleep(2000);
+                pulley.setPower(0);
+                intakeRotate.setPosition(dumpPos);
+                sleep(200);
+
+                break;
+
+                /*default:
+
+                    drive.followTrajectory(toRight);
+
+                    while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                        Pose2d currentPose = drive.getPoseEstimate();
+
+                        TelemetryPacket packet = new TelemetryPacket();
+                        Canvas fieldOverlay = packet.fieldOverlay();
+
+                        packet.put("x", currentPose.getX());
+                        packet.put("y", currentPose.getY());
+                        packet.put("heading", currentPose.getHeading() * (180/ PI));
+
+                        fieldOverlay.setStrokeWidth(4);
+                        fieldOverlay.setStroke("green");
+                        DashboardUtil.drawSampledTrajectory(fieldOverlay, toRight);
+
+                        fieldOverlay.setFill("blue");
+                        fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+
+                        dashboard.sendTelemetryPacket(packet);
+
+                        drive.update();
+                    }
+
+                    pulley.setPower(1);
+                    sleep(1500);
+                    pulley.setPower(0);
+
+                    break;*/
+
         }
 
-        actuator.setPower(0);
+
+    }
+
+    public void unhang() {
+
     }
 
 }
