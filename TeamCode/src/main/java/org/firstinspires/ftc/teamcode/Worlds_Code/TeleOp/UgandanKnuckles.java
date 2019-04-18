@@ -23,11 +23,14 @@
  */
 package org.firstinspires.ftc.teamcode.Worlds_Code.TeleOp;
 
+import com.qualcomm.hardware.motors.Matrix12vMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.openftc.revextensions2.ExpansionHubMotor;
 
 /**
  * CLICK FOR DA QUEEN
@@ -57,10 +60,10 @@ public class UgandanKnuckles extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        leftFront     = hardwareMap.get(DcMotor.class, "frontLeft");
-        rightFront    = hardwareMap.get(DcMotor.class, "frontRight");
-        leftRear      = hardwareMap.get(DcMotor.class, "backLeft");
-        rightRear     = hardwareMap.get(DcMotor.class, "backRight");
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
+        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
 
         pulley        = hardwareMap.get(DcMotor.class, "pulley");
         outtakePulley = hardwareMap.get(DcMotor.class, "outtakePulley");

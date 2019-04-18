@@ -22,7 +22,8 @@
  *
  */
 package org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.Active;
-//lol i am kenzie XD
+
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -85,12 +86,12 @@ public class Roadrunner_Tests extends LinearOpMode {
     private DcMotor outtakePulley;
     private Servo   outtake;
     private Servo   intakeRotate;
-    private Servo   jammer;
+    private Servo   pepeJAM;
     private CRServo intake;
     private GoldAlignDetector detector;
 
 
-    private static String GoldPosition;
+    private static String GoldPosition = "";
     private static final double PI = 355.0/113.0;
     private static final double dumpPos = 0.603;
 
@@ -101,7 +102,7 @@ public class Roadrunner_Tests extends LinearOpMode {
 
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
 
         outtakePulley = hardwareMap.get(DcMotor.class, "outtakePulley");
         outtake       = hardwareMap.get(Servo.class, "outtake");
@@ -109,7 +110,7 @@ public class Roadrunner_Tests extends LinearOpMode {
         intake        = hardwareMap.get(CRServo.class, "intake");
         pulley        = hardwareMap.get(DcMotor.class, "pulley");
         intakeRotate  = hardwareMap.get(Servo.class, "intakeRotate");
-        jammer        = hardwareMap.get(Servo.class, "jammer");
+        pepeJAM        = hardwareMap.get(Servo.class, "pepeJAM");
 
         actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -154,7 +155,7 @@ public class Roadrunner_Tests extends LinearOpMode {
 
 
 
-        Trajectory depot = new TrajectoryBuilder(new Pose2d(-10,-50, oof(275)), DriveConstants.BASE_CONSTRAINTS)
+        Trajectory depot = new TrajectoryBuilder(new Pose2d(-10,-50, oof(270)), DriveConstants.BASE_CONSTRAINTS)
                 .turnTo(oof(345.5))
                 .strafeRight(18)
                 .forward(10)
@@ -165,32 +166,36 @@ public class Roadrunner_Tests extends LinearOpMode {
         Trajectory toLeft = new TrajectoryBuilder(new Pose2d(0,-64,0), DriveConstants.BASE_CONSTRAINTS)
                 .reverse()
                 .splineTo(new Pose2d(-24,-50))
-                .turnTo(oof(170))
+                .turnTo(oof(175))
                 .reverse()
-                .strafeLeft(2)
+                .strafeLeft(4)
                 .forward(18)
                 .build();
 
         Trajectory toMiddle = new TrajectoryBuilder(new Pose2d(0,-64,0), DriveConstants.BASE_CONSTRAINTS)
-                .back(12)
-                .turn(130)
-                .back(36)
-                .turn(-70)
-                .forward(20)
+                .back(18)
+                .turnTo(oof(320))
+                .strafeLeft(8)
+                .back(32)
+                .turnTo(oof(240))
+                .forward(14)
                 .build();
-
-
 
         Trajectory toRight = new TrajectoryBuilder(new Pose2d(0,-64,0), DriveConstants.BASE_CONSTRAINTS)
-                .reverse()
-                .splineTo(new Pose2d(-24,-24))
-                .lineTo(new Vector2d(-38,-10))
-                .turnTo(oof(225))
+                .back(18)
+                .turnTo(oof(320))
+                .strafeLeft(9)
+                .back(46)
+                .turnTo(oof(240))
+                .forward(14)
                 .build();
+
 
         waitForStart();
 
         //if (isStopRequested()) return;
+
+        unhang();
 
         if(detector.getAligned())
         {
@@ -223,16 +228,13 @@ public class Roadrunner_Tests extends LinearOpMode {
             drive.update();
         }
 
-
-
         if(detector.getAligned() && !GoldPosition.equals("M"))
         {
             GoldPosition = "L";
         }
 
-        else if (!GoldPosition.equals("M")){
-            GoldPosition = "R";
-        }
+        telemetry.addData("Gold Position", GoldPosition);
+        telemetry.update();
 
         drive.followTrajectory(depot);
 
@@ -261,7 +263,7 @@ public class Roadrunner_Tests extends LinearOpMode {
         pulley.setPower(1);
         intakeRotate.setPosition(dumpPos);
         intake.setPower(1);
-        sleep(1500);
+        sleep(1250);
 
         pulley.setPower(0.25);
         sleep(1500);
@@ -311,7 +313,7 @@ public class Roadrunner_Tests extends LinearOpMode {
 
                 break;
 
-            default:
+            case "M":
 
                 drive.followTrajectory(toMiddle);
 
@@ -345,7 +347,7 @@ public class Roadrunner_Tests extends LinearOpMode {
 
                 break;
 
-                /*default:
+            case "":
 
                     drive.followTrajectory(toRight);
 
@@ -371,11 +373,13 @@ public class Roadrunner_Tests extends LinearOpMode {
                         drive.update();
                     }
 
-                    pulley.setPower(1);
-                    sleep(1500);
-                    pulley.setPower(0);
+                pulley.setPower(1);
+                sleep(1000);
+                pulley.setPower(0);
+                intakeRotate.setPosition(dumpPos);
+                sleep(200);
 
-                    break;*/
+                    break;
 
         }
 
@@ -383,7 +387,8 @@ public class Roadrunner_Tests extends LinearOpMode {
     }
 
     public void unhang() {
-
+        pepeJAM.setPosition(0.2);
+        sleep(1500);
     }
 
 }
