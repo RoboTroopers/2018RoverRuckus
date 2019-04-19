@@ -114,7 +114,6 @@ public class Auto_Crater extends LinearOpMode {
         pepeJAM        = hardwareMap.get(Servo.class, "pepeJAM");
         limitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitch");
 
-
         actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
@@ -150,21 +149,21 @@ public class Auto_Crater extends LinearOpMode {
         Trajectory exitLZ = new TrajectoryBuilder(new Pose2d(-12, -12, oof(315)), DriveConstants.BASE_CONSTRAINTS)
                 //.lineTo(new Vector2d(-8,-17))
                 .forward(3)
-                .strafeRight(26)
-                .splineTo(new Pose2d(-10,-45, oof(270)))
+                .strafeRight(28)
+                .splineTo(new Pose2d(-10,-45, oof(280)))
                 .strafeRight(5)
                 .turnTo(oof(270))
                 .build();
 
         Trajectory depot = new TrajectoryBuilder(new Pose2d(-10,-50, oof(270)), DriveConstants.BASE_CONSTRAINTS)
                 .turnTo(oof(345.5))
-                .strafeRight(18)
+                .strafeRight(22)
                 .forward(10)
                 .strafeLeft(4)
                 .waitFor(0.5)
                 .build();
 
-        Trajectory toLeft = new TrajectoryBuilder(new Pose2d(0,-64,0), DriveConstants.BASE_CONSTRAINTS)
+        Trajectory toLeft = new TrajectoryBuilder(new Pose2d(0,-68,0), DriveConstants.BASE_CONSTRAINTS)
                 .reverse()
                 .splineTo(new Pose2d(-24,-50))
                 .turnTo(oof(175))
@@ -173,16 +172,16 @@ public class Auto_Crater extends LinearOpMode {
                 .forward(18)
                 .build();
 
-        Trajectory toMiddle = new TrajectoryBuilder(new Pose2d(0,-64,0), DriveConstants.BASE_CONSTRAINTS)
+        Trajectory toMiddle = new TrajectoryBuilder(new Pose2d(0,-68,0), DriveConstants.BASE_CONSTRAINTS)
                 .back(18)
-                .turnTo(oof(320))
-                .strafeLeft(8)
-                .back(32)
+                .turnTo(oof(317))
+                .strafeLeft(12)
+                .back(38)
                 .turnTo(oof(240))
                 .forward(14)
                 .build();
 
-        Trajectory toRight = new TrajectoryBuilder(new Pose2d(0,-64,0), DriveConstants.BASE_CONSTRAINTS)
+        Trajectory toRight = new TrajectoryBuilder(new Pose2d(0,-68,0), DriveConstants.BASE_CONSTRAINTS)
                 .back(18)
                 .turnTo(oof(321))
                 .strafeLeft(10)
@@ -240,17 +239,22 @@ public class Auto_Crater extends LinearOpMode {
             POSVAR = 2;
         }
 
-
         switch (POSVAR)
         {
             case 1:
 
                 unhang();
 
+                sleep(500);
+
+                //actuator.setPower(-0.5);
+                //sleep(200);
+
                 if(detector.getAligned())
                 {
                     GoldPosition = "M";
                 }
+
 
                 drive.followTrajectory(exitLZ);
 

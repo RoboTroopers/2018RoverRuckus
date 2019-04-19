@@ -33,7 +33,7 @@ import org.firstinspires.ftc.teamcode.Worlds_Code.Autonomous.roadrunner.drive.Sa
 
 public class Trajectories {
 
-    /*SampleMecanumDriveBase drive = new SampleMecanumDriveREVOptimized(hardwareMap);
+    SampleMecanumDriveBase drive = new SampleMecanumDriveREVOptimized(hardwareMap);
 
     public Trajectory exitLZ = new TrajectoryBuilder(new Pose2d(-12, -12, Auto_Crater.oof(315)), DriveConstants.BASE_CONSTRAINTS)
             //.lineTo(new Vector2d(-8,-17))
@@ -104,5 +104,5 @@ public class Trajectories {
             .forward(36)
             .turnTo(Auto_Crater.oof(90))
             .forward(20)
-            .build();*/
+            .build();
 }
