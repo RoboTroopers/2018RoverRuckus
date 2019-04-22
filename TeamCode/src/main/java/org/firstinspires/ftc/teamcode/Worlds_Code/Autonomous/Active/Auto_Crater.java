@@ -117,26 +117,49 @@ public class Auto_Crater extends LinearOpMode {
         actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-        // Set up detector
-        detector = new GoldAlignDetector(); // Create detector
-        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
-        detector.useDefaults(); // Set detector to use default settings
+        if (limitSwitch.getState()) {
 
-        // Optional tuning
-        detector.alignSize = 500; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
-        detector.alignPosOffset = 300; // How far from center frame to offset this alignment zone.
-        detector.downscale = 0.4; // How much to downscale the input frames
+            detector = new GoldAlignDetector(); // Create detector
+            detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
+            detector.useDefaults(); // Set detector to use default settings
 
-        detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
-        //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
-        detector.maxAreaScorer.weight = 0.005; //
+            // Optional tuning
+            detector.alignSize = 500; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
+            detector.alignPosOffset = 300; // How far from center frame to offset this alignment zone.
+            detector.downscale = 0.4; // How much to downscale the input frames
 
-        detector.ratioScorer.weight = 5; //
-        detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
+            detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
+            //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
+            detector.maxAreaScorer.weight = 0.005; //
+
+            detector.ratioScorer.weight = 5; //
+            detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
 
 
-        detector.enable(); // Start the detector!
+            detector.enable(); // Start the detector!
+            telemetry.addData("Digital Touch", "Is Not Pressed");
+        } else {
+            telemetry.addData("Digital Touch", "Is Pressed");
 
+            detector = new GoldAlignDetector(); // Create detector
+            detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
+            detector.useDefaults(); // Set detector to use default settings
+
+            // Optional tuning
+            detector.alignSize = 500; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
+            detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
+            detector.downscale = 0.4; // How much to downscale the input frames
+
+            detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
+            //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
+            detector.maxAreaScorer.weight = 0.005; //
+
+            detector.ratioScorer.weight = 5; //
+            detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
+
+
+            detector.enable(); // Start the detector!
+        }
 
 
 
@@ -197,49 +220,58 @@ public class Auto_Crater extends LinearOpMode {
          */
 
         Trajectory exitDepotLZ = new TrajectoryBuilder(new Pose2d(12,-12, oof(45)), DriveConstants.BASE_CONSTRAINTS)
-                .forward(3)
-                .forward(8)
+                .forward(2.75)
+                .strafeRight(28)
+                .forward(5)
                 .build();
 
         Trajectory toLeftDepot = new TrajectoryBuilder(new Pose2d(currentPos.getX(), currentPos.getY(), oof(45)), DriveConstants.BASE_CONSTRAINTS)
-                .turnTo(oof(315))
+                .turn(-oof(90))
                 .forward(10)
                 .back(5)
-                .turnTo(oof(285))
+                .turn(-oof(5)) // actually 270
+                .waitFor(0.5)
                 .build();
 
-        Trajectory toMiddleDepot = new TrajectoryBuilder(new Pose2d(12,-12, oof(45)), DriveConstants.BASE_CONSTRAINTS)
-                .back(12)
-                .turnTo(oof(315))
-                .forward(10)
+        Trajectory checkMiddle = new TrajectoryBuilder(new Pose2d(currentPos.getX(), currentPos.getY(), oof(45)), DriveConstants.BASE_CONSTRAINTS)
                 .back(15)
                 .build();
 
-        Trajectory toRightDepot = new TrajectoryBuilder(drive.getPoseEstimate(), DriveConstants.BASE_CONSTRAINTS)
-                .back(24)
-                .turnTo(oof(330))
+        Trajectory toMiddleDepot = new TrajectoryBuilder(new Pose2d(currentPos.getX(), currentPos.getY(), oof(45)), DriveConstants.BASE_CONSTRAINTS)
+                .turn(-oof(80))
                 .forward(10)
-                .back(10)
-                .turnTo(oof(45))
-                .forward(36)
-                .turnTo(oof(270))
+                .back(5)
+                .build();
+
+        Trajectory toRightDepot = new TrajectoryBuilder(new Pose2d(currentPos.getX(), currentPos.getY(), oof(45)), DriveConstants.BASE_CONSTRAINTS)
+                .back(15)
+                .turn(-oof(80))
+                .forward(12)
+                .back(9)
+                .strafeLeft(24)
                 .build();
 
         Trajectory fromLeftToCrater = new TrajectoryBuilder(new Pose2d(currentPos.getX(), currentPos.getY(), oof(285)), DriveConstants.BASE_CONSTRAINTS)
-                .turnTo(oof(45))
+                .turn(oof(80))
+                .forward(20)
+                .turn(oof(50))
+                .strafeRight(5)
                 .forward(24)
                 .build();
 
-        Trajectory fromMiddleToCrater = new TrajectoryBuilder(drive.getPoseEstimate(), DriveConstants.BASE_CONSTRAINTS)
-                .turnTo(oof(45))
-                .forward(42)
-                .turnTo(oof(90))
+        Trajectory fromMiddleToCrater = new TrajectoryBuilder(new Pose2d(currentPos.getX(),currentPos.getY(),oof(315)), DriveConstants.BASE_CONSTRAINTS)
+                .turn(oof(80))
+                .forward(30)
+                .turn(oof(50))
                 .strafeRight(10)
-                .forward(10)
+                .forward(24)
                 .build();
 
-        Trajectory fromRightToCrater = new TrajectoryBuilder(drive.getPoseEstimate(), DriveConstants.BASE_CONSTRAINTS)
-                .turnTo(oof(90))
+        Trajectory fromRightToCrater = new TrajectoryBuilder(new Pose2d(currentPos.getX(), currentPos.getY(), oof(290)), DriveConstants.BASE_CONSTRAINTS)
+                .turn(oof(80))
+                .forward(46)
+                .turn(oof(50))
+                .strafeRight(10)
                 .forward(24)
                 .build();
 
@@ -249,7 +281,7 @@ public class Auto_Crater extends LinearOpMode {
 
         //if (isStopRequested()) return;
 
-        int POSVAR = 0;
+        int POSVAR;
 
         if (limitSwitch.getState()) {
             POSVAR = 1;
@@ -470,11 +502,6 @@ public class Auto_Crater extends LinearOpMode {
 
                 unhang();
 
-                if(detector.getAligned())
-                {
-                    GoldPosition = "M";
-                }
-
                 sleep(250);
 
                 drive.followTrajectory(exitDepotLZ);
@@ -559,9 +586,35 @@ public class Auto_Crater extends LinearOpMode {
                     }
 
                     park();
+
+                    requestOpModeStop();
                 }
 
-                else if(GoldPosition.equals("M"))
+                drive.followTrajectory(checkMiddle);
+
+                while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                            Pose2d currentPose = drive.getPoseEstimate();
+
+                            TelemetryPacket packet = new TelemetryPacket();
+                            Canvas fieldOverlay = packet.fieldOverlay();
+
+                            packet.put("x", currentPose.getX());
+                            packet.put("y", currentPose.getY());
+                            packet.put("heading", currentPose.getHeading() * (180/ PI));
+
+                            fieldOverlay.setStrokeWidth(4);
+                            fieldOverlay.setStroke("green");
+                            DashboardUtil.drawSampledTrajectory(fieldOverlay, checkMiddle);
+
+                            fieldOverlay.setFill("blue");
+                            fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+
+                            dashboard.sendTelemetryPacket(packet);
+
+                            drive.update();
+                }
+
+                if(detector.getAligned())
                 {
                     drive.followTrajectory(toMiddleDepot);
 
