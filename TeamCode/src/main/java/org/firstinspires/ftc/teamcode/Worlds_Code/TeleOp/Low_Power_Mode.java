@@ -23,6 +23,7 @@
  */
 package org.firstinspires.ftc.teamcode.Worlds_Code.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -32,6 +33,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * *CLICK CLICK CLICK CLICK CLICK*
  */
 
+@Disabled
 @TeleOp(name = "Low Power Ugandan Knuckles")
 public class Low_Power_Mode extends LinearOpMode {
 

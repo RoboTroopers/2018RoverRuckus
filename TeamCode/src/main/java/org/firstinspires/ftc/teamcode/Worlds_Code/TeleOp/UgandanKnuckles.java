@@ -79,6 +79,7 @@ public class UgandanKnuckles extends LinearOpMode {
         rightRear.setDirection(DcMotor.Direction.REVERSE);
 
         actuator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pulley.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
 
@@ -123,37 +124,37 @@ public class UgandanKnuckles extends LinearOpMode {
 
             // Rest of the motors control
 
-            pulley.setPower(-gamepad2.left_stick_y);
             outtakePulley.setPower(gamepad2.right_stick_y);
 
-            /*if(gamepad2.dpad_up)
+            if(outtakePulley.getPower() < -0.75)
             {
-                actuator.setTargetPosition(-7000);
-                actuator.setPower(1);
+                outtakePulley.setPower(gamepad2.right_stick_y + 0.25);
+            }
 
-                while(actuator.isBusy())
-                {
-                    telemetry.addData("actuator is going up","");
-                    telemetry.update();
-                }
-
-                actuator.setPower(0);
+            else {
+                outtakePulley.setPower(gamepad2.right_stick_y);
             }
 
 
-            else if(gamepad2.dpad_down)
+            if(gamepad2.right_bumper)
             {
-                actuator.setTargetPosition(0);
-                actuator.setPower(1);
-
-                while(actuator.isBusy())
+                if(-gamepad2.left_stick_y > 0.5)
                 {
-                    telemetry.addData("actuator is going down","");
-                    telemetry.update();
+                    pulley.setPower(-gamepad2.left_stick_y - 0.25);
                 }
 
-                actuator.setPower(0);
-            }*/
+                if(-gamepad2.left_stick_y < -0.5)
+                {
+                    pulley.setPower(-gamepad2.left_stick_y + 0.25);
+                }
+            }
+
+            else {
+                pulley.setPower(-gamepad2.left_stick_y);
+            }
+
+
+
 
             if(gamepad2.dpad_up)
             {
@@ -190,7 +191,7 @@ public class UgandanKnuckles extends LinearOpMode {
 
             if(gamepad2.b)
             {
-                intakeRotate.setPosition(0.603);
+                intakeRotate.setPosition(0.73); //.725
             }
 
             else if(gamepad2.y)
@@ -199,12 +200,13 @@ public class UgandanKnuckles extends LinearOpMode {
             }
 
 
-            if(gamepad2.left_trigger == 1)
+
+            if(gamepad2.right_trigger == 1)
             {
                 intake.setPower(1);
             }
 
-            else if(gamepad2.right_trigger ==  1)
+            else if(gamepad2.left_trigger ==  1)
             {
                 intake.setPower(-1);
             }
@@ -214,14 +216,15 @@ public class UgandanKnuckles extends LinearOpMode {
             }
 
 
-            if(gamepad2.right_bumper)
+
+            if(gamepad2.left_bumper)
             {
-                outtake.setPosition(0);
+                outtake.setPosition(0.5);
             }
 
-            else if(gamepad2.left_bumper)
+            else if(outtakePulley.getPower() < 0)
             {
-                outtake.setPosition(0.4);
+                outtake.setPosition(0.24);
             }
 
             else {

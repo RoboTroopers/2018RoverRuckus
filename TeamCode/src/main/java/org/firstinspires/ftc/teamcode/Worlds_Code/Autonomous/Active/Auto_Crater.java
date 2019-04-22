@@ -74,12 +74,10 @@ import java.util.Arrays;
 import static java.lang.Math.PI;
 import static java.lang.Math.round;
 
-/*
- * This is an example of a more complex path to really test the tuning.
- */
 
 @Autonomous(name = "Ugandan Crater", group = "ZZZ")
 public class Auto_Crater extends LinearOpMode {
+
 
     private DcMotor actuator;
     private DcMotor pulley;
@@ -93,8 +91,9 @@ public class Auto_Crater extends LinearOpMode {
 
 
     private static String GoldPosition = "";
-    private static final double PI = 355.0/113.0;
+
     private static final double dumpPos = 0.603;
+    private static final double PI = 3.14159265359;
 
     public static double oof(double degrees)
     {
@@ -114,6 +113,7 @@ public class Auto_Crater extends LinearOpMode {
         pepeJAM        = hardwareMap.get(Servo.class, "pepeJAM");
         limitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitch");
 
+        actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         actuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
@@ -146,46 +146,47 @@ public class Auto_Crater extends LinearOpMode {
 
         // Declare trajectories
 
+        Pose2d currentPos = drive.getPoseEstimate();
+
         Trajectory exitLZ = new TrajectoryBuilder(new Pose2d(-12, -12, oof(315)), DriveConstants.BASE_CONSTRAINTS)
-                //.lineTo(new Vector2d(-8,-17))
                 .forward(3)
-                .strafeRight(28)
-                .splineTo(new Pose2d(-10,-45, oof(280)))
+                .strafeRight(25)
+                .splineTo(new Pose2d(-10,-45, oof(270)))
                 .strafeRight(5)
                 .turnTo(oof(270))
                 .build();
 
         Trajectory depot = new TrajectoryBuilder(new Pose2d(-10,-50, oof(270)), DriveConstants.BASE_CONSTRAINTS)
-                .turnTo(oof(345.5))
+                .turnTo(oof(360))
                 .strafeRight(22)
-                .forward(10)
+                .forward(15)
                 .strafeLeft(4)
                 .waitFor(0.5)
                 .build();
 
-        Trajectory toLeft = new TrajectoryBuilder(new Pose2d(0,-68,0), DriveConstants.BASE_CONSTRAINTS)
+        Trajectory toLeft = new TrajectoryBuilder(new Pose2d(5,-68,0), DriveConstants.BASE_CONSTRAINTS)
                 .reverse()
-                .splineTo(new Pose2d(-24,-50))
+                .splineTo(new Pose2d(-24,-52))
                 .turnTo(oof(175))
                 .reverse()
                 .strafeLeft(4)
-                .forward(18)
+                .forward(10)
                 .build();
 
-        Trajectory toMiddle = new TrajectoryBuilder(new Pose2d(0,-68,0), DriveConstants.BASE_CONSTRAINTS)
-                .back(18)
-                .turnTo(oof(317))
-                .strafeLeft(12)
-                .back(38)
+        Trajectory toMiddle = new TrajectoryBuilder(new Pose2d(5,-68,0), DriveConstants.BASE_CONSTRAINTS)
+                .back(16)
+                .turnTo(oof(315))
+                .strafeLeft(15)
+                .back(34)
                 .turnTo(oof(240))
-                .forward(14)
+                .forward(16)
                 .build();
 
-        Trajectory toRight = new TrajectoryBuilder(new Pose2d(0,-68,0), DriveConstants.BASE_CONSTRAINTS)
-                .back(18)
-                .turnTo(oof(321))
+        Trajectory toRight = new TrajectoryBuilder(new Pose2d(5,-68,0), DriveConstants.BASE_CONSTRAINTS)
+                .back(16)
+                .turnTo(oof(315))
                 .strafeLeft(10)
-                .back(46)
+                .back(48)
                 .turnTo(oof(240))
                 .forward(14)
                 .build();
@@ -195,32 +196,53 @@ public class Auto_Crater extends LinearOpMode {
          * DEPOT TRAJECTORIES STARTS HERE
          */
 
-        Trajectory toLeftDepot = new TrajectoryBuilder(new Pose2d(12,-12, oof(45)), DriveConstants.BASE_CONSTRAINTS)
+        Trajectory exitDepotLZ = new TrajectoryBuilder(new Pose2d(12,-12, oof(45)), DriveConstants.BASE_CONSTRAINTS)
                 .forward(3)
-                .strafeRight(12)
+                .forward(8)
                 .build();
 
-        Trajectory toRightMarker = new TrajectoryBuilder((drive.getPoseEstimate()), DriveConstants.BASE_CONSTRAINTS)
-                .back(24)
+        Trajectory toLeftDepot = new TrajectoryBuilder(new Pose2d(currentPos.getX(), currentPos.getY(), oof(45)), DriveConstants.BASE_CONSTRAINTS)
                 .turnTo(oof(315))
-                .forward(18)
-                .build();
-
-        Trajectory toMiddleMarker = new TrajectoryBuilder(new Pose2d(12,-12, oof(45)), DriveConstants.BASE_CONSTRAINTS)
-                .forward(3)
-                .strafeRight(12)
+                .forward(10)
                 .back(5)
-                .turnTo(oof(315))
-                .forward(18)
+                .turnTo(oof(285))
                 .build();
 
-        Trajectory middlePark = new TrajectoryBuilder((drive.getPoseEstimate()), DriveConstants.BASE_CONSTRAINTS)
-                .back(18)
+        Trajectory toMiddleDepot = new TrajectoryBuilder(new Pose2d(12,-12, oof(45)), DriveConstants.BASE_CONSTRAINTS)
+                .back(12)
+                .turnTo(oof(315))
+                .forward(10)
+                .back(15)
+                .build();
+
+        Trajectory toRightDepot = new TrajectoryBuilder(drive.getPoseEstimate(), DriveConstants.BASE_CONSTRAINTS)
+                .back(24)
+                .turnTo(oof(330))
+                .forward(10)
+                .back(10)
                 .turnTo(oof(45))
                 .forward(36)
-                .turnTo(oof(90))
-                .forward(20)
+                .turnTo(oof(270))
                 .build();
+
+        Trajectory fromLeftToCrater = new TrajectoryBuilder(new Pose2d(currentPos.getX(), currentPos.getY(), oof(285)), DriveConstants.BASE_CONSTRAINTS)
+                .turnTo(oof(45))
+                .forward(24)
+                .build();
+
+        Trajectory fromMiddleToCrater = new TrajectoryBuilder(drive.getPoseEstimate(), DriveConstants.BASE_CONSTRAINTS)
+                .turnTo(oof(45))
+                .forward(42)
+                .turnTo(oof(90))
+                .strafeRight(10)
+                .forward(10)
+                .build();
+
+        Trajectory fromRightToCrater = new TrajectoryBuilder(drive.getPoseEstimate(), DriveConstants.BASE_CONSTRAINTS)
+                .turnTo(oof(90))
+                .forward(24)
+                .build();
+
 
 
         waitForStart();
@@ -229,14 +251,12 @@ public class Auto_Crater extends LinearOpMode {
 
         int POSVAR = 0;
 
-        if(limitSwitch.getState())
-        {
+        if (limitSwitch.getState()) {
             POSVAR = 1;
-        }
-
-        if(!limitSwitch.getState())
-        {
+            telemetry.addData("Digital Touch", "Is Not Pressed");
+        } else {
             POSVAR = 2;
+            telemetry.addData("Digital Touch", "Is Pressed");
         }
 
         switch (POSVAR)
@@ -245,10 +265,9 @@ public class Auto_Crater extends LinearOpMode {
 
                 unhang();
 
-                sleep(500);
 
-                //actuator.setPower(-0.5);
-                //sleep(200);
+                sleep(200);
+
 
                 if(detector.getAligned())
                 {
@@ -313,93 +332,92 @@ public class Auto_Crater extends LinearOpMode {
                     drive.update();
                 }
 
+                intakeRotate.setPosition(0.25);
+
                 pulley.setPower(1);
                 sleep(1250);
 
                 intakeRotate.setPosition(dumpPos);
-                intake.setPower(1);
+                intake.setPower(-1);
                 pulley.setPower(0.25);
                 sleep(1250);
 
                 pulley.setPower(-1);
                 intake.setPower(0);
-                intakeRotate.setPosition(0);
+                intakeRotate.setPosition(0.25);
                 sleep(750);
 
 
 
-                switch (GoldPosition)
-                {
-                    case "L":
+                if(GoldPosition.equals("L")) {
 
-                        drive.followTrajectory(toLeft);
+                    drive.followTrajectory(toLeft);
 
-                        while (!isStopRequested() && drive.isFollowingTrajectory()) {
-                            Pose2d currentPose = drive.getPoseEstimate();
+                    while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                        Pose2d currentPose = drive.getPoseEstimate();
 
-                            TelemetryPacket packet = new TelemetryPacket();
-                            Canvas fieldOverlay = packet.fieldOverlay();
+                        TelemetryPacket packet = new TelemetryPacket();
+                        Canvas fieldOverlay = packet.fieldOverlay();
 
-                            packet.put("x", currentPose.getX());
-                            packet.put("y", currentPose.getY());
-                            packet.put("heading", currentPose.getHeading() * (180/ PI));
+                        packet.put("x", currentPose.getX());
+                        packet.put("y", currentPose.getY());
+                        packet.put("heading", currentPose.getHeading() * (180 / PI));
 
-                            fieldOverlay.setStrokeWidth(4);
-                            fieldOverlay.setStroke("green");
-                            DashboardUtil.drawSampledTrajectory(fieldOverlay, toLeft);
+                        fieldOverlay.setStrokeWidth(4);
+                        fieldOverlay.setStroke("green");
+                        DashboardUtil.drawSampledTrajectory(fieldOverlay, toLeft);
 
-                            fieldOverlay.setFill("blue");
-                            fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+                        fieldOverlay.setFill("blue");
+                        fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
 
-                            dashboard.sendTelemetryPacket(packet);
+                        dashboard.sendTelemetryPacket(packet);
 
-                            drive.update();
-                        }
+                        drive.update();
+                    }
 
-                        pulley.setPower(1);
-                        sleep(2000);
-                        pulley.setPower(0);
-                        intakeRotate.setPosition(dumpPos);
-                        sleep(200);
+                    pulley.setPower(1);
+                    sleep(2000);
+                    pulley.setPower(0);
+                    intakeRotate.setPosition(dumpPos);
+                    sleep(200);
+                }
 
 
-                        break;
+                else if(GoldPosition.equals("M")) {
 
-                    case "M":
+                    drive.followTrajectory(toMiddle);
 
-                        drive.followTrajectory(toMiddle);
+                    while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                        Pose2d currentPose = drive.getPoseEstimate();
 
-                        while (!isStopRequested() && drive.isFollowingTrajectory()) {
-                            Pose2d currentPose = drive.getPoseEstimate();
+                        TelemetryPacket packet = new TelemetryPacket();
+                        Canvas fieldOverlay = packet.fieldOverlay();
 
-                            TelemetryPacket packet = new TelemetryPacket();
-                            Canvas fieldOverlay = packet.fieldOverlay();
+                        packet.put("x", currentPose.getX());
+                        packet.put("y", currentPose.getY());
+                        packet.put("heading", currentPose.getHeading() * (180 / PI));
 
-                            packet.put("x", currentPose.getX());
-                            packet.put("y", currentPose.getY());
-                            packet.put("heading", currentPose.getHeading() * (180/ PI));
+                        fieldOverlay.setStrokeWidth(4);
+                        fieldOverlay.setStroke("green");
+                        DashboardUtil.drawSampledTrajectory(fieldOverlay, toMiddle);
 
-                            fieldOverlay.setStrokeWidth(4);
-                            fieldOverlay.setStroke("green");
-                            DashboardUtil.drawSampledTrajectory(fieldOverlay, toMiddle);
+                        fieldOverlay.setFill("blue");
+                        fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
 
-                            fieldOverlay.setFill("blue");
-                            fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+                        dashboard.sendTelemetryPacket(packet);
 
-                            dashboard.sendTelemetryPacket(packet);
+                        drive.update();
+                    }
 
-                            drive.update();
-                        }
+                    pulley.setPower(1);
+                    sleep(2000);
+                    pulley.setPower(0);
+                    intakeRotate.setPosition(dumpPos);
+                    sleep(200);
 
-                        pulley.setPower(1);
-                        sleep(2000);
-                        pulley.setPower(0);
-                        intakeRotate.setPosition(dumpPos);
-                        sleep(200);
+                }
 
-                        break;
-
-                    case "":
+                    else {
 
                         drive.followTrajectory(toRight);
 
@@ -431,29 +449,229 @@ public class Auto_Crater extends LinearOpMode {
                         intakeRotate.setPosition(dumpPos);
                         sleep(200);
 
-                        break;
 
                 }
 
                 break;
 
-            case 2:
+
+                    /**
+                     * DEPOT
+                     * PROGRAM
+                     * STARTS
+                     * HERE
+                     */
+
+
+
+
+
+                    case 2:
+
+                unhang();
 
                 if(detector.getAligned())
                 {
                     GoldPosition = "M";
-                    unhang();
-                    drive.followTrajectory(toMiddleMarker);
-
-                    requestOpModeStop();
                 }
 
-                unhang();
+                sleep(250);
 
-                drive.followTrajectory(toLeft);
+                drive.followTrajectory(exitDepotLZ);
 
+                while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                    Pose2d currentPose = drive.getPoseEstimate();
 
+                    TelemetryPacket packet = new TelemetryPacket();
+                    Canvas fieldOverlay = packet.fieldOverlay();
 
+                    packet.put("x", currentPose.getX());
+                    packet.put("y", currentPose.getY());
+                    packet.put("heading", currentPose.getHeading() * (180/ PI));
+
+                    fieldOverlay.setStrokeWidth(4);
+                    fieldOverlay.setStroke("green");
+                    DashboardUtil.drawSampledTrajectory(fieldOverlay, exitDepotLZ);
+
+                    fieldOverlay.setFill("blue");
+                    fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+
+                    dashboard.sendTelemetryPacket(packet);
+
+                    drive.update();
+                }
+
+                if(detector.getAligned())
+                {
+                    GoldPosition = "L";
+                }
+
+                if(GoldPosition.equals("L"))
+                {
+                    drive.followTrajectory(toLeftDepot);
+
+                    while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                        Pose2d currentPose = drive.getPoseEstimate();
+
+                        TelemetryPacket packet = new TelemetryPacket();
+                        Canvas fieldOverlay = packet.fieldOverlay();
+
+                        packet.put("x", currentPose.getX());
+                        packet.put("y", currentPose.getY());
+                        packet.put("heading", currentPose.getHeading() * (180/ PI));
+
+                        fieldOverlay.setStrokeWidth(4);
+                        fieldOverlay.setStroke("green");
+                        DashboardUtil.drawSampledTrajectory(fieldOverlay, toLeftDepot);
+
+                        fieldOverlay.setFill("blue");
+                        fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+
+                        dashboard.sendTelemetryPacket(packet);
+
+                        drive.update();
+                    }
+
+                    claim();
+
+                    drive.followTrajectory(fromLeftToCrater);
+
+                    while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                        Pose2d currentPose = drive.getPoseEstimate();
+
+                        TelemetryPacket packet = new TelemetryPacket();
+                        Canvas fieldOverlay = packet.fieldOverlay();
+
+                        packet.put("x", currentPose.getX());
+                        packet.put("y", currentPose.getY());
+                        packet.put("heading", currentPose.getHeading() * (180/ PI));
+
+                        fieldOverlay.setStrokeWidth(4);
+                        fieldOverlay.setStroke("green");
+                        DashboardUtil.drawSampledTrajectory(fieldOverlay, fromLeftToCrater);
+
+                        fieldOverlay.setFill("blue");
+                        fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+
+                        dashboard.sendTelemetryPacket(packet);
+
+                        drive.update();
+                    }
+
+                    park();
+                }
+
+                else if(GoldPosition.equals("M"))
+                {
+                    drive.followTrajectory(toMiddleDepot);
+
+                    while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                        Pose2d currentPose = drive.getPoseEstimate();
+
+                        TelemetryPacket packet = new TelemetryPacket();
+                        Canvas fieldOverlay = packet.fieldOverlay();
+
+                        packet.put("x", currentPose.getX());
+                        packet.put("y", currentPose.getY());
+                        packet.put("heading", currentPose.getHeading() * (180/ PI));
+
+                        fieldOverlay.setStrokeWidth(4);
+                        fieldOverlay.setStroke("green");
+                        DashboardUtil.drawSampledTrajectory(fieldOverlay, toMiddleDepot);
+
+                        fieldOverlay.setFill("blue");
+                        fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+
+                        dashboard.sendTelemetryPacket(packet);
+
+                        drive.update();
+                    }
+
+                    claim();
+
+                    drive.followTrajectory(fromMiddleToCrater);
+
+                    while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                        Pose2d currentPose = drive.getPoseEstimate();
+
+                        TelemetryPacket packet = new TelemetryPacket();
+                        Canvas fieldOverlay = packet.fieldOverlay();
+
+                        packet.put("x", currentPose.getX());
+                        packet.put("y", currentPose.getY());
+                        packet.put("heading", currentPose.getHeading() * (180/ PI));
+
+                        fieldOverlay.setStrokeWidth(4);
+                        fieldOverlay.setStroke("green");
+                        DashboardUtil.drawSampledTrajectory(fieldOverlay, fromMiddleToCrater);
+
+                        fieldOverlay.setFill("blue");
+                        fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+
+                        dashboard.sendTelemetryPacket(packet);
+
+                        drive.update();
+                    }
+
+                    park();
+                }
+
+                else {
+                    drive.followTrajectory(toRightDepot);
+
+                    while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                        Pose2d currentPose = drive.getPoseEstimate();
+
+                        TelemetryPacket packet = new TelemetryPacket();
+                        Canvas fieldOverlay = packet.fieldOverlay();
+
+                        packet.put("x", currentPose.getX());
+                        packet.put("y", currentPose.getY());
+                        packet.put("heading", currentPose.getHeading() * (180/ PI));
+
+                        fieldOverlay.setStrokeWidth(4);
+                        fieldOverlay.setStroke("green");
+                        DashboardUtil.drawSampledTrajectory(fieldOverlay, toRightDepot);
+
+                        fieldOverlay.setFill("blue");
+                        fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+
+                        dashboard.sendTelemetryPacket(packet);
+
+                        drive.update();
+                    }
+
+                    claim();
+
+                    drive.followTrajectory(fromRightToCrater);
+
+                    while (!isStopRequested() && drive.isFollowingTrajectory()) {
+                        Pose2d currentPose = drive.getPoseEstimate();
+
+                        TelemetryPacket packet = new TelemetryPacket();
+                        Canvas fieldOverlay = packet.fieldOverlay();
+
+                        packet.put("x", currentPose.getX());
+                        packet.put("y", currentPose.getY());
+                        packet.put("heading", currentPose.getHeading() * (180/ PI));
+
+                        fieldOverlay.setStrokeWidth(4);
+                        fieldOverlay.setStroke("green");
+                        DashboardUtil.drawSampledTrajectory(fieldOverlay, fromRightToCrater);
+
+                        fieldOverlay.setFill("blue");
+                        fieldOverlay.fillCircle(currentPose.getX(), currentPose.getY(), 3);
+
+                        dashboard.sendTelemetryPacket(packet);
+
+                        drive.update();
+                    }
+
+                    park();
+
+                }
+
+                break;
 
         }
 
@@ -461,7 +679,15 @@ public class Auto_Crater extends LinearOpMode {
 
     public void unhang() {
         pepeJAM.setPosition(0.2);
-        sleep(1500);
+        actuator.setTargetPosition(-3000);
+        actuator.setPower(1);
+        while(actuator.isBusy())
+        {
+            telemetry.addData("Actuator is at %7d", actuator.getCurrentPosition());
+            telemetry.update();
+        }
+        actuator.setPower(0);
+
     }
 
     public void park() {
@@ -473,17 +699,19 @@ public class Auto_Crater extends LinearOpMode {
     }
 
     public void claim() {
+        intakeRotate.setPosition(0.25);
+
         pulley.setPower(1);
         sleep(1250);
 
         intakeRotate.setPosition(dumpPos);
-        intake.setPower(1);
+        intake.setPower(-1);
         pulley.setPower(0.25);
         sleep(1250);
 
         pulley.setPower(-1);
         intake.setPower(0);
-        intakeRotate.setPosition(0);
+        intakeRotate.setPosition(0.25);
         sleep(750);
     }
 

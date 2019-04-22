@@ -24,6 +24,7 @@
 
 package org.firstinspires.ftc.teamcode.Old_Code.Auto;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -35,7 +36,7 @@ import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 
-
+@Disabled
 @Autonomous(name = "Chungus Double Crater", group = "Working")
 
 public class ChungusDoubleCrater extends LinearOpMode {
